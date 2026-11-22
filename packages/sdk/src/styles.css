@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright 2026 HeyPointer */
 /*
  * HeyPointer coachmark styles. Tailwind v4 theme + utilities only (no preflight):
  * the stylesheet is injected into a closed-off shadow root, so nothing here can

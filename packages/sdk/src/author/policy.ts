@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { accessibleName, isUsable } from '../targeting/index';
 import { MAX_LABEL, clean, forQuotes } from './flow';
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { HeyPointer } from './player';
 import { defineHeyPointerElement, HEYPOINTER_TAG } from './element';
 import { rememberScript } from './author-loader';

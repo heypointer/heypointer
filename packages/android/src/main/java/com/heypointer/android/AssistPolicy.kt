@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 package com.heypointer.android
 
 /** What the policy knows about the view a step resolved to. No Android types, so it is unit-testable on the JVM. */

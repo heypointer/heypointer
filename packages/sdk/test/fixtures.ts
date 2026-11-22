@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import type { Walkthrough, WalkthroughStep } from '../src/types';
 
 const ev = [{ sourceType: 'prd' as const, path: 'fixtures/prd/invite-teammate.md', lineStart: 5, lineEnd: 5, excerpt: 'Click "Invite teammate".', nodeId: 'n1' }];

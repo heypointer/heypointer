@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 /** A tiny host app. "Send invite" is simulated: nothing leaves the browser. */
 const members = [
   { name: 'Ada Owner', email: 'ada@example.com', role: 'Owner' },

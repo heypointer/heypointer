@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { afterEach, beforeEach, expect, it } from 'vitest';
 import { createApp, nextTick } from 'vue';
 import App from './App.vue';

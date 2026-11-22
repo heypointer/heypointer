@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { resolveDetailed } from '../targeting/index';
 import { sanitizeTheme, themeVars, COLOR_SCHEMES, type ColorScheme, type HeyPointerTheme } from '../theme';
 import { Capture, type Captured } from './capture';

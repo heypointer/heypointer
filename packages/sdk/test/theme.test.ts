@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { describe, expect, it } from 'vitest';
 import { contrastProblems, contrastRatio } from '../src/contrast';
 import { isCssColor, isCssLength, isFontFamily, sanitizeTheme, themeVars } from '../src/theme';

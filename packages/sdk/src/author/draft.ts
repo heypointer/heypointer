@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { MAX_LABEL, MAX_STEP_TEXT, MAX_STEPS, clean, forQuotes, isConsequentialLabel, problemsOf, quotedLabel, renderFlow, slug } from './flow';
 
 export type StepKind = 'click' | 'type' | 'select';

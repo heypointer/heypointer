@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { createRef } from 'react';
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';

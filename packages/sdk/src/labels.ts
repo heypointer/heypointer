@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 /**
  * Every string the guide shows or announces that does not come from the server.
  * Hosts override any subset: `labels: { next: 'Continue' }`. Values are plain text with `{placeholder}`

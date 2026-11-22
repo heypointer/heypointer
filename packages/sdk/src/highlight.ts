@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 /** Visual-only spotlight. Never intercepts pointer events, so the user performs the action themselves. */
 /** Sum of frame-element offsets from the element's own document up to the top window. */
 export function frameOffset(el: HTMLElement): { x: number; y: number } {

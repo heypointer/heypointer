@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { z } from "zod";
 
 /** Contract version. Bump on any breaking schema change and note it in packages/contracts/README.md. */

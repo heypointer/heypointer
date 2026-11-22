@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import type { ColorScheme, HeyPointerTheme } from './theme';
 
 /** Development-time advice only. Imported behind the DEV flag, so shipped bundles do not contain it. */

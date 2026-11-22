@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { HEYPOINTER_TAG, defineHeyPointerElement, type HeyPointerElement } from '../src/index';
 import { CLOSE_EVENT, HeyPointer, OPEN_EVENT } from '../src/player';

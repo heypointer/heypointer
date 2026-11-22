@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import type { StepTarget } from '../types';
 
 export type Strategy = 'selector' | 'role-text' | 'label' | 'text';

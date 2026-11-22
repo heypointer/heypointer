@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 package com.heypointer.android
 
 data class Box(val left: Float, val top: Float, val right: Float, val bottom: Float) {

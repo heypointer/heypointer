@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
 

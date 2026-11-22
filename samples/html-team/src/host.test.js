@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { beforeEach, expect, it } from 'vitest';
 import { mountHost } from './host.js';
 

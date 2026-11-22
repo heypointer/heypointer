@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 // Type-only re-export of the shared contracts. No runtime import, so zod never enters the SDK bundle.
 // Contract source: packages/contracts.
 import type { Evidence, FlowSuggestion, StepAction, Target, Walkthrough, WalkthroughStep } from '@heypointerhq/contracts';

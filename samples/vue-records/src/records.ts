@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 /** A records register. Repeated "Edit"/"Archive" row buttons are intentional: they test ambiguity. */
 export interface RecordRow { id: string; title: string; category: string; owner: string }
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import type { FlowSuggestion, Walkthrough, WalkthroughStep } from './types';
 
 const ACTIONS = ['click', 'type', 'select', 'navigate', 'observe'];

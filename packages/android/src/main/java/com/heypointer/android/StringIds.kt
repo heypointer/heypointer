@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 package com.heypointer.android
 
 /** Library resource id for a string key. Exhaustive, so adding a [Str] without a resource does not compile. */

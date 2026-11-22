@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 /**
  * The PRD-format Markdown `heypointer scan` reads. These helpers mirror the scanner's authoring rules
  * (the scanner cannot ship in a browser bundle); an internal test renders the same drafts through

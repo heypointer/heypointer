@@ -143,13 +143,28 @@ project(':heypointer-android').projectDir = new File('../universal-walkthrough/p
 implementation project(':heypointer-android')
 ```
 
-As an artifact: `./gradlew :heypointer-android:publishToMavenLocal` (from a build that includes the module, such as Echo) writes `com.heypointer:heypointer-android:0.2.0` (AAR, POM, Gradle module metadata and sources jar) to `~/.m2/repository`. Nothing is uploaded anywhere. Consume it with `mavenLocal()` and:
+### From Maven Central
+
+The release artifact is `com.heypointer:heypointer-android` (an AAR with sources and a javadoc jar, signed with the HeyPointer release key, licensed Apache-2.0). Maven Central is a default repository in current Android projects; if yours does not list it, add `mavenCentral()` to `repositories` in `settings.gradle` (or the root `build.gradle`).
 
 ```groovy
-implementation 'com.heypointer:heypointer-android:0.2.0'
+dependencies {
+    implementation 'com.heypointer:heypointer-android:0.2.0'
+}
 ```
 
-The POM carries name, description, SCM and the license placeholder `UNLICENSED`: the repository has no license file yet, so replace it before any public release. The build needs Android Gradle Plugin 7.1 or newer. `consumer-rules.pro` ships inside the AAR and keeps the public entry point and the walkthrough types when the app uses R8. Checked with an R8-minified Echo build.
+```kotlin
+// build.gradle.kts
+dependencies {
+    implementation("com.heypointer:heypointer-android:0.2.0")
+}
+```
+
+The library has no AndroidX dependency; it needs `minSdk 21` and compiles against API 34. `consumer-rules.pro` ships inside the AAR and keeps the public entry point and the walkthrough types when the app uses R8 (checked with an R8-minified sample app).
+
+### From a local Maven repository
+
+`./gradlew :heypointer-android:publishToMavenLocal` (from a build that includes the module) writes the same coordinates to `~/.m2/repository`, unsigned and for local testing only. Consume it with `mavenLocal()`. A build that applies the module needs Android Gradle Plugin 7.1 or newer (`publishing.singleVariant`).
 
 ## Run the tests
 

@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright 2026 HeyPointer -->
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { HeyPointerAssistant } from '@heypointerhq/vue';

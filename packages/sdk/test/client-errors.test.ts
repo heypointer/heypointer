@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { describe, expect, it } from 'vitest';
 import { HeyPointerClient } from '../src/client';
 

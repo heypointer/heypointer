@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { createApp, h, nextTick, ref } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 import { createSSRApp } from 'vue';

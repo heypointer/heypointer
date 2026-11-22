@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { defineComponent, h, onMounted, ref } from 'vue';
 import { HEYPOINTER_TAG, defineHeyPointerElement, type HeyPointer, type HeyPointerElement, type HeyPointerLabels, type HeyPointerTheme } from '@heypointerhq/sdk';
 import type { PropType } from 'vue';

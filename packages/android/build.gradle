@@ -1,7 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
+    id 'signing'
 }
 
 // Applied by a host app's Gradle build, which supplies the plugin versions. See README.md.
@@ -37,12 +40,43 @@ dependencies {
 }
 
 // ./gradlew :heypointer-android:publishToMavenLocal  ->  ~/.m2/repository/com/heypointer/heypointer-android/0.2.0/
-// Local only. Nothing here uploads to a remote repository.
+// ./gradlew :heypointer-android:publishReleasePublicationToCentralStagingRepository  ->  build/central-staging/
+// Nothing here uploads to a remote repository. The maintainers zip build/central-staging and upload it to the
+// Sonatype Central Portal by hand.
+
+// Central requires a -javadoc.jar. The library is Kotlin and the docs live on the site, so the jar carries a pointer.
+def javadocPlaceholderDir = layout.buildDirectory.dir('javadoc-placeholder')
+tasks.register('writeJavadocPlaceholder') {
+    def out = javadocPlaceholderDir
+    outputs.dir(out)
+    doLast {
+        def dir = out.get().asFile
+        dir.mkdirs()
+        new File(dir, 'README.txt').text = 'HeyPointer for Android (com.heypointer:heypointer-android).\n' +
+            'API documentation: https://heypointer.com/docs/\n' +
+            'Source: https://github.com/heypointer/heypointer\n'
+    }
+}
+tasks.register('javadocJar', Jar) {
+    dependsOn 'writeJavadocPlaceholder'
+    archiveClassifier = 'javadoc'
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+    from javadocPlaceholderDir
+}
+
 afterEvaluate {
     publishing {
+        repositories {
+            maven {
+                name = 'CentralStaging'
+                url = layout.buildDirectory.dir('central-staging')
+            }
+        }
         publications {
             release(MavenPublication) {
                 from components.release
+                artifact tasks.named('javadocJar')
                 groupId = 'com.heypointer'
                 artifactId = 'heypointer-android'
                 version = '0.2.0'
@@ -52,9 +86,17 @@ afterEvaluate {
                     url = 'https://github.com/heypointer/heypointer'
                     licenses {
                         license {
-                            // Placeholder: the repository has no license file yet. Replace before any public release.
-                            name = 'UNLICENSED'
-                            url = 'https://github.com/heypointer/heypointer'
+                            name = 'The Apache License, Version 2.0'
+                            url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution = 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'heypointer'
+                            name = 'HeyPointer'
+                            email = 'admin@heypointer.com'
+                            url = 'https://heypointer.com'
                         }
                     }
                     scm {
@@ -64,6 +106,17 @@ afterEvaluate {
                     }
                 }
             }
+        }
+    }
+
+    // Signing is off unless a key is supplied, so publishToMavenLocal and host-app builds never need one.
+    // Pass the ASCII-armored private key as -PsigningInMemoryKey or ORG_GRADLE_PROJECT_signingInMemoryKey,
+    // with signingPassword (and optionally signingInMemoryKeyId). Nothing is read from files.
+    def signingKey = project.findProperty('signingInMemoryKey')
+    if (signingKey) {
+        signing {
+            useInMemoryPgpKeys(project.findProperty('signingInMemoryKeyId') ?: null, signingKey.toString(), (project.findProperty('signingPassword') ?: '').toString())
+            sign publishing.publications.release
         }
     }
 }

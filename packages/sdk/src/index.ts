@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 export { HeyPointer, ASSIST_EVENT, OPEN_EVENT, CLOSE_EVENT, type HeyPointerOptions, type AssistEvent } from './player';
 export { DEFAULT_LABELS, resolveLabels, type HeyPointerLabels, type LabelKey } from './labels';
 export { sanitizeTheme, type HeyPointerTheme, type ColorScheme } from './theme';

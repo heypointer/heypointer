@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { HeyPointerClient, NoSpeechError, SpeechUnavailableError } from './client';
 import { Highlighter } from './highlight';
 import { BrowserRecorder, speechSupported, type AudioRecorder } from './recorder';

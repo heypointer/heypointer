@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { defineConfig } from 'vite';
 
 // Author mode (record steps) as its own script-tag file. Never part of heypointer.global.js.

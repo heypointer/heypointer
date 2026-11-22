@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright 2026 HeyPointer */
 /*
  * Author mode panel. Plain CSS inside a shadow root. Reads the same public --hp-* tokens as the guide,
  * with the same defaults, so a themed host gets a matching panel. Logical properties only (RTL safe).

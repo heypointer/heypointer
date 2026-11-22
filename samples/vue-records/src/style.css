@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright 2026 HeyPointer */
 /* Deliberately different from the other samples: sidebar layout, dense table, left-aligned forms. */
 * { box-sizing: border-box; }
 body { margin: 0; font: 14px/1.5 Georgia, serif; background: #f7f5f0; color: #1c1917; }

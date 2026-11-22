@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { DEV, MAX_LABEL_LENGTH, fmt, warnOnce } from '../labels';
 
 /**

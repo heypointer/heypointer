@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { useRef, useState, type FormEvent } from 'react';
 import { HeyPointerAssistant } from '@heypointerhq/react';
 import { artClass, count, products, search, total, type CartLine, type Product } from './products';

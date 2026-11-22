@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { DEFAULT_LABELS, MAX_LABEL_LENGTH, fmt, parseJsonAttribute, resolveLabels } from '../src/labels';
 

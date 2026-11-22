@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { CLICKABLE, contextOf, controlName, isDisabled, isRecordable, isSensitiveField, isTextEntry, looksLikePageData, tagOf, typeOf } from './policy';
 import { MAX_LABEL, routeName } from './flow';
 import type { StepKind } from './draft';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import type { AuthorOptions, AuthorSession } from './author/index';
 import { importAuthor } from './author-import';
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { beforeEach, describe, expect, it } from 'vitest';
 import { resolveDetailed, resolveTarget, waitForTarget } from '../src/targeting/index';
 

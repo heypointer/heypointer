@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { HeyPointer, type HeyPointerOptions } from './player';
 import { parseJsonAttribute, type HeyPointerLabels } from './labels';
 import type { ColorScheme, HeyPointerTheme } from './theme';

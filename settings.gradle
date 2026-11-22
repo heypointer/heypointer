@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 // Lets the Android library build on its own (for CI and local tests). A host app that consumes it
 // includes packages/android itself and supplies its own plugin versions.
 pluginManagement {

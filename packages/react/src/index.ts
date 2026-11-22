@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 'use client';
 import { createElement, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { HEYPOINTER_TAG, defineHeyPointerElement, type ColorScheme, type HeyPointer, type HeyPointerElement, type HeyPointerLabels, type HeyPointerTheme } from '@heypointerhq/sdk';

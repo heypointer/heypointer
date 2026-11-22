@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import CSS from './panel.css?inline';
 import { authorText, type ResolvedAuthorLabels, type AuthorLabelKey } from './labels';
 import { fileName, hasGate, problems, toMarkdown, type DraftStore, type Entry, type StepEntry } from './draft';

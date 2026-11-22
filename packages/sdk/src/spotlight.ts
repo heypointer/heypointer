@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 HeyPointer
 import { frameOffset } from './highlight';
 
 type Placement = 'below' | 'above' | 'left' | 'right' | 'floating';
