@@ -1,0 +1,62 @@
+# Copy to .github/workflows/heypointer.yml in the repository that holds your app.
+# Also copy .github/actions/heypointer-publish/ from the HeyPointer repository, and add the
+# heypointer CLI from npm (npm install --save-dev @heypointerhq/cli), so `npm ci` installs it.
+#
+# One-time setup:
+#   Settings > Secrets and variables > Actions
+#     Variable HEYPOINTER_SERVER   https://heypointer.example.com
+#     Secret   HEYPOINTER_API_KEY  the server's API key
+#   Settings > Environments > heypointer-production: require a reviewer if you want a person to approve each publish.
+# Pin third-party actions to a full commit SHA once you have chosen versions.
+
+name: heypointer
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: heypointer-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # Pull requests (including forks) get no secret. This only proves the flows still scan and the file is valid.
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - uses: ./.github/actions/heypointer-publish
+        with:
+          dry-run: "true"
+          required: "false"
+
+  # Only the default branch publishes, and only after the change is merged.
+  publish:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: heypointer-production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - uses: ./.github/actions/heypointer-publish
+        with:
+          server-url: ${{ vars.HEYPOINTER_SERVER }}
+          api-key: ${{ secrets.HEYPOINTER_API_KEY }}
+          # Set to "false" to skip quietly until the server variable exists.
+          required: "true"

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HeyPointer colors (dark): used when the device or the app is in night mode. -->
+<resources>
+    <color name="heypointer_color_accent">#38BDF8</color>
+    <color name="heypointer_color_on_accent">#082F49</color>
+    <color name="heypointer_color_surface">#0F172A</color>
+    <color name="heypointer_color_on_surface">#F1F5F9</color>
+    <color name="heypointer_color_muted">#CBD5E1</color>
+    <color name="heypointer_color_scrim">#B3000000</color>
+    <color name="heypointer_color_ring">#F59E0B</color>
+    <color name="heypointer_color_notice_bg">#422006</color>
+    <color name="heypointer_color_notice_text">#FBBF24</color>
+    <color name="heypointer_color_accent_disabled">#475569</color>
+</resources>

@@ -1,0 +1,15 @@
+node_modules
+dist
+build
+.gradle
+.env
+.env.*
+!.env.example
+*.db
+.heypointer
+.vitest/
+coverage
+test-results
+playwright-report
+.DS_Store
+*.log

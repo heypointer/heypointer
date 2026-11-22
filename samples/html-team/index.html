@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Acme Workspace (HeyPointer sample: plain HTML)</title>
+    <style>
+      body{font:16px/1.5 system-ui,sans-serif;margin:0;color:#0f172a}
+      header{display:flex;gap:16px;align-items:center;padding:12px 24px;border-bottom:1px solid #e2e8f0}
+      nav{display:flex;gap:12px} nav a{color:#1d4ed8}
+      main{padding:24px;max-width:720px}
+      table{border-collapse:collapse;width:100%} td,th{border-bottom:1px solid #e2e8f0;padding:6px;text-align:left}
+      dialog{position:fixed;inset:0;margin:auto;border:1px solid #94a3b8;border-radius:12px;padding:20px;min-width:0;width:min(360px,calc(100vw - 24px));max-height:calc(100dvh - 128px);overflow:auto;box-sizing:border-box}
+      label{display:block;margin:10px 0 4px}
+      button,input,select{font:inherit;padding:6px 10px}
+      .toast{margin-top:16px;padding:10px;background:#dcfce7;border:1px solid #15803d;border-radius:8px}
+    </style>
+  </head>
+  <body>
+    <header><strong>Acme Workspace</strong>
+      <nav aria-label="Main"><a href="#/">Home</a><a href="#/team">Team</a></nav>
+    </header>
+    <main id="app"></main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "@heypointerhq/sample-vue-records",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "TypeScript + Vue 3 sample. Uses the <HeyPointerAssistant> component from @heypointerhq/vue.",
+  "scripts": {
+    "dev": "vite --port 5174 --strictPort",
+    "build": "vue-tsc --noEmit && vite build",
+    "typecheck": "vue-tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@heypointerhq/vue": "*",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "jsdom": "^25.0.0",
+    "vite": "^8.3.8",
+    "vue-tsc": "^3.0.0"
+  },
+  "license": "Apache-2.0"
+}

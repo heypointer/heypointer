@@ -1,0 +1,19 @@
+// Lets the Android library build on its own (for CI and local tests). A host app that consumes it
+// includes packages/android itself and supplies its own plugin versions.
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = 'heypointer'
+include ':heypointer-android'
+project(':heypointer-android').projectDir = new File(settingsDir, 'packages/android')

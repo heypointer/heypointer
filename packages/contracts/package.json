@@ -1,0 +1,51 @@
+{
+  "name": "@heypointerhq/contracts",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared HeyPointer workflow, knowledge-base and walkthrough contracts (zod schemas + types).",
+  "keywords": [
+    "heypointer",
+    "contracts",
+    "schema",
+    "zod",
+    "walkthrough"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heypointer/heypointer.git",
+    "directory": "packages/contracts"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "clean": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\"",
+    "build": "tsc -p tsconfig.build.json",
+    "pretypecheck": "npm run build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  }
+}

@@ -1,0 +1,118 @@
+name: HeyPointer publish
+description: >-
+  Scan a repository for user flows and publish the knowledge base to a running HeyPointer server.
+  Fails closed: with no server it fails, unless required is "false", and then it skips with a notice.
+  The API key is passed to the publish step through the environment only and never appears in a command line.
+
+inputs:
+  server-url:
+    description: HeyPointer server, for example https://heypointer.example.com. https only (http is allowed for localhost).
+    required: false
+    default: ""
+  api-key:
+    description: The server's API key. Pass it from an Actions secret. Not needed with dry-run.
+    required: false
+    default: ""
+  working-directory:
+    description: Directory to scan, relative to the workspace.
+    required: false
+    default: "."
+  dry-run:
+    description: Scan and validate the knowledge base but send nothing. The only mode allowed on pull_request events.
+    required: false
+    default: "false"
+  required:
+    description: >-
+      "true" (default) fails when server-url is empty. "false" skips with a notice instead, for repositories
+      that have not set the server up yet.
+    required: false
+    default: "true"
+  cli-command:
+    description: >-
+      How to run the heypointer CLI. Install the CLI from npm first (@heypointerhq/cli). The default only uses a copy already installed in the project (a dev
+      dependency) and never downloads one: an unpinned "npx heypointer" could fetch an unrelated package.
+    required: false
+    default: npx --no-install heypointer
+
+outputs:
+  skipped:
+    description: '"true" when the step was skipped because no server-url was given and required is "false".'
+    value: ${{ steps.check.outputs.skipped }}
+  kb:
+    description: Path of the knowledge base file that was scanned.
+    value: ${{ steps.check.outputs.kb }}
+
+runs:
+  using: composite
+  steps:
+    - name: Check inputs
+      id: check
+      shell: bash
+      env:
+        SERVER_URL: ${{ inputs.server-url }}
+        HAS_KEY: ${{ inputs.api-key != '' }}
+        DRY_RUN: ${{ inputs.dry-run }}
+        REQUIRED: ${{ inputs.required }}
+        EVENT_NAME: ${{ github.event_name }}
+        WORKDIR: ${{ inputs.working-directory }}
+      run: |
+        set -euo pipefail
+        echo "kb=${RUNNER_TEMP}/heypointer-kb.json" >> "$GITHUB_OUTPUT"
+        if [ ! -d "$WORKDIR" ]; then
+          echo "::error::working-directory '$WORKDIR' does not exist."; exit 1
+        fi
+        case "$EVENT_NAME" in
+          pull_request|pull_request_target)
+            if [ "$DRY_RUN" != "true" ]; then
+              echo "::error::Publishing from a pull request event is refused: it could replace what users are served with unreviewed content. Use dry-run: true on pull requests and publish only from the default branch."; exit 1
+            fi ;;
+        esac
+        if [ -z "$SERVER_URL" ] && [ "$DRY_RUN" != "true" ]; then
+          if [ "$REQUIRED" = "false" ]; then
+            echo "::notice::HeyPointer: no server-url given and required is false, so nothing was scanned or published."
+            echo "skipped=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "::error::HeyPointer: server-url is empty. Set the HEYPOINTER_SERVER repository variable, or pass required: false to skip until it is set."; exit 1
+        fi
+        if [ "$DRY_RUN" != "true" ]; then
+          case "$SERVER_URL" in
+            https://*|http://localhost|http://localhost:*|http://127.0.0.1|http://127.0.0.1:*) ;;
+            *) echo "::error::HeyPointer: server-url must use https."; exit 1 ;;
+          esac
+          if [ "$HAS_KEY" != "true" ]; then
+            case "$SERVER_URL" in
+              http://localhost*|http://127.0.0.1*) ;;
+              *) echo "::error::HeyPointer: api-key is empty. Pass the server's API key from an Actions secret."; exit 1 ;;
+            esac
+          fi
+        fi
+        echo "skipped=false" >> "$GITHUB_OUTPUT"
+
+    - name: Scan
+      if: steps.check.outputs.skipped != 'true'
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        CLI: ${{ inputs.cli-command }}
+        KB: ${{ steps.check.outputs.kb }}
+      run: |
+        set -euo pipefail
+        read -r -a cmd <<< "$CLI"
+        "${cmd[@]}" scan . --quiet --out "$KB"
+
+    - name: Publish
+      if: steps.check.outputs.skipped != 'true'
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        CLI: ${{ inputs.cli-command }}
+        KB: ${{ steps.check.outputs.kb }}
+        DRY_RUN: ${{ inputs.dry-run }}
+        HEYPOINTER_SERVER: ${{ inputs.server-url }}
+        HEYPOINTER_API_KEY: ${{ inputs.api-key }}
+      run: |
+        set -euo pipefail
+        read -r -a cmd <<< "$CLI"
+        args=(publish --kb "$KB")
+        if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
+        "${cmd[@]}" "${args[@]}"

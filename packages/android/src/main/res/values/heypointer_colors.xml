@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  HeyPointer colors (light). Override any of these in your app's colors.xml, and in values-night/ for dark.
+  HeyPointerTheme passed to HeyPointer.install wins over these. Keep text and its background at 4.5:1 or better.
+-->
+<resources>
+    <color name="heypointer_color_accent">#087EA4</color>
+    <color name="heypointer_color_on_accent">#FFFFFF</color>
+    <color name="heypointer_color_surface">#FFFFFF</color>
+    <color name="heypointer_color_on_surface">#172B3A</color>
+    <color name="heypointer_color_muted">#334155</color>
+    <color name="heypointer_color_scrim">#8C09141E</color>
+    <color name="heypointer_color_ring">#F59E0B</color>
+    <color name="heypointer_color_notice_bg">#FEF3C7</color>
+    <color name="heypointer_color_notice_text">#92400E</color>
+    <color name="heypointer_color_accent_disabled">#9FB6C2</color>
+</resources>

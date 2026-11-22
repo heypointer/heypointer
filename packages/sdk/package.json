@@ -1,0 +1,72 @@
+{
+  "name": "@heypointerhq/sdk",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "HeyPointer in-app guide: turns a goal into a spotlight-and-tooltip walkthrough of the real page. ESM, custom element and script-tag bundle; styles are compiled in.",
+  "keywords": [
+    "heypointer",
+    "walkthrough",
+    "onboarding",
+    "product-tour",
+    "spotlight",
+    "coachmark",
+    "web-component",
+    "custom-element"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heypointer/heypointer.git",
+    "directory": "packages/sdk"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./element": {
+      "source": "./src/element.ts",
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
+    },
+    "./author": {
+      "source": "./src/author/index.ts",
+      "types": "./dist/author/index.d.ts",
+      "import": "./dist/author.js"
+    },
+    "./author/global": "./dist/heypointer.author.js",
+    "./global": "./dist/heypointer.global.js",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "./dist/heypointer.global.js",
+    "./dist/heypointer.author.js"
+  ],
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "clean": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\"",
+    "pretypecheck": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "vite build -c vite.lib.config.ts && vite build -c vite.global.config.ts && vite build -c vite.author.config.ts && tsc -p tsconfig.build.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@heypointerhq/contracts": "^0.2.0"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.0"
+  }
+}

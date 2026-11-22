@@ -1,0 +1,241 @@
+/*
+ * HeyPointer coachmark styles. Tailwind v4 theme + utilities only (no preflight):
+ * the stylesheet is injected into a closed-off shadow root, so nothing here can
+ * leak into the host app and nothing from the host app can reach it, except the documented hooks:
+ *   - CSS custom properties --hp-* (and --hp-dark-* for the dark scheme), set on the page or on <heypointer-assistant>
+ *   - ::part() names, reached with [data-heypointer-root]::part(name)
+ * The internal --color-hp-* tokens below are private: they read the public --hp-* values with a default.
+ */
+@import "tailwindcss/theme.css" layer(theme);
+/* source(none): every utility is pulled in with @apply below. Auto-detection would also emit utilities for any English word in the source. */
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+
+@theme static {
+  --color-hp-accent: var(--hp-accent, #087ea4);
+  --color-hp-accent-fg: var(--hp-accent-fg, #fff);
+  --color-hp-bg: var(--hp-bg, #fff);
+  --color-hp-fg: var(--hp-fg, #172b3a);
+  --color-hp-muted: var(--hp-muted, #334155);
+  --color-hp-border: var(--hp-border, #64748b);
+  --color-hp-warn-bg: var(--hp-warn-bg, #fef3c7);
+  --color-hp-warn-bd: var(--hp-warn-border, #92400e);
+  --color-hp-err-bg: var(--hp-err-bg, #fee2e2);
+  --color-hp-err-bd: var(--hp-err-border, #b91c1c);
+  --color-hp-focus: var(--hp-focus, #1e3a8a);
+  --color-hp-halo: var(--hp-halo, #fff);
+  --color-hp-ring: var(--hp-ring, #f59e0b);
+  --color-hp-dim: var(--hp-dim, rgb(9 20 30 / 0.55));
+  --radius-hp: var(--hp-radius, 12px);
+}
+
+:host {
+  all: revert;
+  pointer-events: none;
+  font-family: var(--hp-font, system-ui, sans-serif);
+  font-size: var(--hp-font-size, 14px);
+  line-height: 1.45;
+  color: var(--color-hp-fg);
+  /*
+   * Tailwind seeds these through @property, which browsers ignore inside a shadow root.
+   * Without them border/outline/shadow utilities silently compute to nothing.
+   */
+  --tw-border-style: solid;
+  --tw-outline-style: solid;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-color: initial;
+  --tw-inset-shadow: 0 0 #0000;
+  --tw-inset-ring-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+}
+
+/* Dark scheme: follows the OS unless colorScheme forces light, or is forced on with data-scheme="dark".
+   Surfaces never fall back to the light --hp-* value (a light bg with the dark text would be unreadable);
+   the accent, ring and dim do, so one brand color works in both schemes. */
+@media (prefers-color-scheme: dark) {
+  :host(:not([data-scheme="light"])) {
+    --color-hp-accent: var(--hp-dark-accent, var(--hp-accent, #38bdf8));
+    --color-hp-accent-fg: var(--hp-dark-accent-fg, var(--hp-accent-fg, #082f49));
+    --color-hp-bg: var(--hp-dark-bg, #0f172a);
+    --color-hp-fg: var(--hp-dark-fg, #f1f5f9);
+    --color-hp-muted: var(--hp-dark-muted, #cbd5e1);
+    --color-hp-border: var(--hp-dark-border, #94a3b8);
+    --color-hp-warn-bg: var(--hp-dark-warn-bg, #422006);
+    --color-hp-warn-bd: var(--hp-dark-warn-border, #fbbf24);
+    --color-hp-err-bg: var(--hp-dark-err-bg, #450a0a);
+    --color-hp-err-bd: var(--hp-dark-err-border, #f87171);
+    --color-hp-focus: var(--hp-dark-focus, #fff);
+    --color-hp-halo: var(--hp-dark-halo, #1e3a8a);
+    --color-hp-ring: var(--hp-dark-ring, var(--hp-ring, #f59e0b));
+    --color-hp-dim: var(--hp-dark-dim, var(--hp-dim, rgb(9 20 30 / 0.55)));
+  }
+}
+:host([data-scheme="dark"]) {
+  --color-hp-accent: var(--hp-dark-accent, var(--hp-accent, #38bdf8));
+  --color-hp-accent-fg: var(--hp-dark-accent-fg, var(--hp-accent-fg, #082f49));
+  --color-hp-bg: var(--hp-dark-bg, #0f172a);
+  --color-hp-fg: var(--hp-dark-fg, #f1f5f9);
+  --color-hp-muted: var(--hp-dark-muted, #cbd5e1);
+  --color-hp-border: var(--hp-dark-border, #94a3b8);
+  --color-hp-warn-bg: var(--hp-dark-warn-bg, #422006);
+  --color-hp-warn-bd: var(--hp-dark-warn-border, #fbbf24);
+  --color-hp-err-bg: var(--hp-dark-err-bg, #450a0a);
+  --color-hp-err-bd: var(--hp-dark-err-border, #f87171);
+  --color-hp-focus: var(--hp-dark-focus, #fff);
+  --color-hp-halo: var(--hp-dark-halo, #1e3a8a);
+  --color-hp-ring: var(--hp-dark-ring, var(--hp-ring, #f59e0b));
+  --color-hp-dim: var(--hp-dark-dim, var(--hp-dim, rgb(9 20 30 / 0.55)));
+}
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+}
+
+@layer components {
+  .hp-launcher {
+    z-index: 2147483646;
+    @apply fixed bottom-4 min-h-10 cursor-pointer rounded-full border-0 bg-hp-accent px-4 py-2.5 text-hp-accent-fg shadow-lg;
+    inset-inline-end: 16px;
+    pointer-events: auto;
+    font: inherit;
+  }
+  .hp-launcher[hidden] { display: none; }
+
+  .hp-panel {
+    z-index: 2147483646;
+    @apply fixed bottom-18 overflow-auto rounded-hp border border-hp-border bg-hp-bg p-4 text-hp-fg;
+    inset-inline-end: 16px;
+    text-align: start;
+    pointer-events: auto;
+    width: min(360px, calc(100vw - 32px));
+    max-height: min(70dvh, 32rem);
+    box-shadow: 0 8px 30px #0004;
+  }
+  .hp-panel[hidden], .hp-spotlight[hidden], .hp-tour-arrow[hidden] { display: none; }
+  /* launcherSide: start puts the button and the goal card on the other edge. */
+  :host([data-launcher-side="start"]) .hp-launcher { inset-inline-start: 16px; inset-inline-end: auto; }
+  @media (min-width: 601px) {
+    :host([data-launcher-side="start"]) .hp-panel:not(.hp-tour) { inset-inline-start: 16px; inset-inline-end: auto; }
+  }
+
+  /* Dimmer. The cutout over the target is a clip-path set from measured geometry. */
+  .hp-spotlight {
+    z-index: 2147483644;
+    @apply fixed top-0 left-0 bg-hp-dim;
+    width: 100vw;
+    height: 100dvh;
+    pointer-events: none;
+  }
+
+  .hp-highlight {
+    z-index: 2147483645;
+    @apply fixed rounded-lg border-[3px] border-hp-ring outline-2 outline-hp-focus;
+    pointer-events: none;
+    transition: all 0.2s ease;
+  }
+
+  /* Coachmark card */
+  .hp-panel.hp-tour {
+    @apply w-auto border-0 p-5;
+    width: min(400px, calc(100vw - 24px));
+    inset-inline-end: auto;
+    bottom: auto;
+    max-height: calc(100dvh - 24px);
+    border-radius: 14px;
+    box-shadow: 0 10px 36px #0005;
+  }
+  .hp-tour-head { @apply flex items-start justify-between gap-3; }
+  .hp-tour h2 { @apply m-0 mb-2 text-base leading-snug; }
+  .hp-tour p { @apply m-0 mb-4.5 text-sm; }
+  .hp-tour .hp-progress, .hp-tour-count { @apply m-0 mb-1.75 text-[13px] whitespace-nowrap; }
+  .hp-tour .hp-close { @apply -mt-2 min-h-9 min-w-9 text-2xl; margin-inline-end: -8px; }
+  .hp-tour .hp-row { @apply mt-4 flex-nowrap items-center justify-between; }
+  .hp-tour .hp-primary { @apply min-h-10 rounded-full px-5 py-2 font-semibold; }
+  .hp-tour .hp-skip { @apply cursor-pointer border-0 bg-transparent px-3 py-2 font-semibold text-hp-accent; }
+  .hp-tour .hp-back { @apply cursor-pointer border-0 bg-transparent px-0 py-2 text-hp-fg; }
+  .hp-tour .hp-evidence { @apply mt-3; }
+  .hp-tour .hp-warn { @apply my-3 text-[13px]; }
+  .hp-released h2, .hp-released > p:not(.hp-released-note) { @apply text-hp-muted; }
+  .hp-released .hp-released-note { @apply m-0 mb-3 text-[13px] font-semibold text-hp-fg; }
+  .hp-tour-tools { @apply mb-3 text-xs text-hp-muted; }
+  .hp-tour-tools summary { @apply cursor-pointer py-1; }
+  .hp-goal-compact { @apply mt-2 mb-0; }
+  .hp-goal-compact .hp-row { @apply mt-0 flex-nowrap; }
+  .hp-goal-compact input[type=text] { @apply h-8 min-h-8 text-xs; }
+  .hp-goal-compact button { @apply min-h-8 px-2 py-1 text-xs; }
+
+  .hp-tour.hp-floating {
+    @apply w-auto;
+    left: 12px !important;
+    right: 12px !important;
+    top: auto !important;
+    bottom: 12px !important;
+  }
+  .hp-tour-arrow {
+    z-index: 2147483645;
+    @apply fixed size-4 rotate-45 bg-hp-bg;
+    pointer-events: none;
+  }
+  .hp-tour[data-placement=below] + .hp-tour-arrow { clip-path: polygon(0 0, 100% 0, 0 100%); }
+  .hp-tour[data-placement=above] + .hp-tour-arrow { clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+  .hp-tour[data-placement=left] + .hp-tour-arrow,
+  .hp-tour[data-placement=right] + .hp-tour-arrow { display: none; }
+
+  /* Shared controls */
+  .hp-row { @apply mt-2 flex flex-wrap gap-2; }
+  .hp-row > input[type=text] { @apply min-w-0 flex-1; }
+  button, input[type=text] {
+    @apply min-h-9 rounded-lg border border-hp-border bg-hp-bg px-2.5 py-1.5 text-hp-fg;
+    font: inherit;
+  }
+  button.hp-primary { @apply border-hp-accent bg-hp-accent text-hp-accent-fg; }
+  button[aria-disabled=true], button:disabled { @apply cursor-not-allowed opacity-55; }
+  button:focus-visible, input:focus-visible, .hp-launcher:focus-visible,
+  h2:focus-visible, summary:focus-visible {
+    @apply outline-2 outline-offset-2 outline-hp-focus;
+    box-shadow: 0 0 0 4px var(--color-hp-halo);
+  }
+  h2:focus { outline: none; }
+  h2 { @apply m-0 mb-1 text-[15px]; }
+
+  .hp-assist { @apply mt-2 flex cursor-pointer items-center gap-2.5 text-[13px] text-hp-fg; min-height: 44px; }
+  .hp-assist input { @apply m-0 size-5 shrink-0 cursor-pointer accent-hp-accent; min-height: 0; }
+  .hp-assist-note { @apply m-0 mb-2 text-[13px] text-hp-muted; }
+  .hp-assist-note.hp-alert { @apply text-hp-fg; }
+  .hp-assist-hint { @apply m-0 mb-3 text-[13px] text-hp-muted; }
+  .hp-assist-hint[hidden] { display: none; }
+  .hp-warn { @apply mt-2 rounded-lg border border-hp-warn-bd bg-hp-warn-bg p-2; }
+  .hp-alert { @apply mt-2 rounded-lg border border-hp-err-bd bg-hp-err-bg p-2; }
+  .hp-suggest { @apply mt-3 flex flex-col items-stretch gap-2; }
+  .hp-suggest-label { @apply m-0 text-[13px] font-semibold text-hp-muted; }
+  .hp-suggestion { @apply cursor-pointer text-start; overflow-wrap: anywhere; }
+  .hp-evidence { @apply mt-2 text-xs text-hp-muted; }
+  .hp-evidence summary { @apply cursor-pointer; }
+  .hp-head { @apply flex items-center justify-between gap-2; }
+  .hp-close { @apply cursor-pointer border-0 bg-transparent px-2.5 py-1 text-[22px] leading-none text-hp-fg; }
+  .hp-progress { @apply text-xs text-hp-muted; }
+  .hp-sr-only {
+    @apply absolute size-px overflow-hidden whitespace-nowrap;
+    clip: rect(0 0 0 0);
+  }
+}
+
+@layer components {
+  @media (pointer: coarse) {
+    button, input[type=text], .hp-launcher { min-height: 44px; }
+  }
+  @media (max-width: 600px) {
+    .hp-panel:not(.hp-tour) {
+      @apply right-0 bottom-0 left-0 w-full;
+      max-height: 75dvh;
+      border-radius: var(--radius-hp) var(--radius-hp) 0 0;
+    }
+    .hp-tour h2 { @apply text-[15px]; }
+    .hp-tour { @apply p-4; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hp-highlight { transition: none; }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@heypointerhq/sample-html-team",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Plain HTML + JavaScript sample. Loads HeyPointer with a <script> tag, the way any web app can.",
+  "scripts": {
+    "dev": "vite --port 5173 --strictPort",
+    "build": "vite build",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.0",
+    "vite": "^8.3.8"
+  },
+  "license": "Apache-2.0"
+}

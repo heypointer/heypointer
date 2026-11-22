@@ -1,0 +1,26 @@
+/* Deliberately different from the other samples: sidebar layout, dense table, left-aligned forms. */
+* { box-sizing: border-box; }
+body { margin: 0; font: 14px/1.5 Georgia, serif; background: #f7f5f0; color: #1c1917; }
+.shell { display: grid; grid-template-columns: 200px 1fr; min-height: 100vh; }
+.side { background: #292524; color: #fafaf9; padding: 20px 12px; }
+.side h1 { font-size: 20px; margin: 0 0 20px; }
+.side nav { display: flex; flex-direction: column; gap: 10px; }
+.side a { color: #d6d3d1; text-decoration: none; padding: 6px 8px; border-left: 3px solid transparent; }
+.side a[aria-current] { border-left-color: #fbbf24; color: #fff; }
+.content { padding: 28px; max-width: 900px; }
+h2 { font-size: 22px; margin-top: 0; }
+.toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { padding: 8px 10px; border: 1px solid #e7e5e4; text-align: left; }
+th { background: #efece8; }
+/* Repeated-row actions: every row has an "Edit" and "Archive" control with identical text. */
+.row-actions button { margin-right: 6px; font: inherit; font-size: 12px; }
+button, input, select, textarea { font: inherit; }
+.primary { background: #78350f; color: #fff; border: 1px solid #78350f; padding: 8px 14px; cursor: pointer; }
+dialog { border: 2px solid #292524; padding: 24px; width: min(420px, 90vw); }
+dialog h3 { margin-top: 0; }
+.field { margin-bottom: 12px; }
+.field label { display: block; font-weight: bold; margin-bottom: 4px; }
+.field input, .field select, .field textarea { width: 100%; padding: 6px; border: 1px solid #a8a29e; }
+.notice { margin-top: 16px; padding: 12px; background: #ecfdf5; border-left: 4px solid #059669; }
+@media (max-width: 600px) { .shell { grid-template-columns: 1fr; } .side nav { flex-direction: row; } }

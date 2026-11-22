@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HeyPointer sizes. Override in your app's dimens.xml. HeyPointerTheme passed to HeyPointer.install wins over these. -->
+<resources>
+    <dimen name="heypointer_ring_width">3dp</dimen>
+    <dimen name="heypointer_card_radius">14dp</dimen>
+    <dimen name="heypointer_highlight_radius">8dp</dimen>
+    <!-- Multiplies every text size. 1.0 = unchanged. -->
+    <item name="heypointer_text_scale" format="float" type="dimen">1.0</item>
+</resources>

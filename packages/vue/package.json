@@ -1,0 +1,59 @@
+{
+  "name": "@heypointerhq/vue",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Vue 3 component for HeyPointer: renders the shared <heypointer-assistant> element and manages its lifecycle.",
+  "keywords": [
+    "heypointer",
+    "vue",
+    "nuxt",
+    "walkthrough",
+    "onboarding",
+    "product-tour"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heypointer/heypointer.git",
+    "directory": "packages/vue"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "clean": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\"",
+    "build": "tsc -p tsconfig.build.json",
+    "pretypecheck": "npm run build",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@heypointerhq/sdk": "^0.2.0"
+  },
+  "peerDependencies": {
+    "vue": ">=3.3"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.0",
+    "vue": "^3.5.0"
+  }
+}
