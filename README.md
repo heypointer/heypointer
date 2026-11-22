@@ -32,9 +32,9 @@ npm test
 
 The Android library builds with Gradle 7.6 and JDK 17: `gradle :heypointer-android:testDebugUnitTest`.
 
-## How this repository is produced
+## Contributing
 
-This repository is generated from a private source repository by an export script that copies the public packages and docs and checks them for leaks. Please open an issue rather than a pull request for now; changes are made in the source and appear here with the next sync.
+Issues are welcome: bug reports, questions and ideas. We are not accepting pull requests yet.
 
 ## License
 
