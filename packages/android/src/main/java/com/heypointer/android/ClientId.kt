@@ -5,12 +5,12 @@ package com.heypointer.android
 import org.json.JSONObject
 
 /**
- * The client id from `heypointer init` (`gfc_` + 24 hex). It is publishable, not a secret: the server
+ * The client id from `heypointer init` (`hpc_` + 24 hex). It is publishable, not a secret: the server
  * limits it by allowed origins and rate. Sent as `X-HeyPointer-Client` on walkthrough requests only.
  */
 internal object ClientId {
     const val HEADER = "X-HeyPointer-Client"
-    private val PATTERN = Regex("^gfc_[0-9a-f]{24}$")
+    private val PATTERN = Regex("^(?:hpc|gfc)_[0-9a-f]{24}$")
 
     /** Which message to show, and its arguments. The text itself comes from the labels and string resources. */
     class Failure(val key: Str, val args: List<Any> = emptyList())

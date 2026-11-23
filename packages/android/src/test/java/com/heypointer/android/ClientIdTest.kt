@@ -10,11 +10,17 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ClientIdTest {
-    private val id = "gfc_0123456789abcdef01234567"
+    private val id = "hpc_0123456789abcdef01234567"
 
     @Test fun headerName() = assertEquals("X-HeyPointer-Client", ClientId.HEADER)
 
     @Test fun wellFormedIdMaySend() = assertNull(ClientId.localProblem(id))
+
+    @Test fun idsIssuedBeforeTheHpPrefixesStayValid() {
+        assertNull(ClientId.localProblem("gfc_0123456789abcdef01234567"))
+        assertNull(ClientId.localProblem("gfc_ea6fae0123456789abcdef01"))
+        assertNotNull(ClientId.localProblem("gfx_0123456789abcdef01234567"))
+    }
 
     @Test fun blankIdIsSentWithoutTheHeaderSoTheServerDecides() {
         assertNull(ClientId.localProblem(""))
@@ -22,7 +28,7 @@ class ClientIdTest {
     }
 
     @Test fun malformedIdsNeverReachTheServer() {
-        for (bad in listOf("gfc_short", "abc", "GFC_0123456789abcdef01234567", "gfc_0123456789abcdef0123456g", "gfc_0123456789abcdef012345678")) {
+        for (bad in listOf("hpc_short", "abc", "GFC_0123456789abcdef01234567", "hpc_0123456789abcdef0123456g", "hpc_0123456789abcdef012345678")) {
             assertEquals(bad, Str.CLIENT_MALFORMED, ClientId.localProblem(bad))
         }
     }

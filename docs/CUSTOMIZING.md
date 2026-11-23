@@ -33,7 +33,7 @@ Labels, theme, color scheme, direction, language, launcher and side change **in 
 ### Labels and translation
 
 ```html
-<heypointer-assistant base-url="https://guide.example.com" client-id="gfc_..."
+<heypointer-assistant base-url="https://guide.example.com" client-id="hpc_..."
   labels='{"launcher":"Ayuda","submit":"Mostrar","next":"Siguiente","back":"Atrás","skip":"Omitir",
            "stepProgress":"Paso {current} de {total}","tourCount":"{current} de {total}"}'></heypointer-assistant>
 ```
@@ -129,7 +129,7 @@ Class names inside the shadow root are private and may change; parts and the `--
 ### Your own button
 
 ```html
-<heypointer-assistant base-url="..." client-id="gfc_..." launcher="none"></heypointer-assistant>
+<heypointer-assistant base-url="..." client-id="hpc_..." launcher="none"></heypointer-assistant>
 <button id="help">Help</button>
 <script>
   const guide = document.querySelector("heypointer-assistant");

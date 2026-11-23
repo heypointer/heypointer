@@ -7,7 +7,7 @@ import { HEYPOINTER_TAG, defineHeyPointerElement, type ColorScheme, type HeyPoin
 export interface HeyPointerAssistantProps {
   /** HeyPointer API origin, e.g. https://heypointer.example.com */
   baseUrl: string;
-  /** Publishable client id from `heypointer init` (`gfc_` + 24 hex). The server refuses guide requests without a valid one. */
+  /** Publishable client id from `heypointer init` (`hpc_` + 24 hex). The server refuses guide requests without a valid one. */
   clientId?: string;
   targetTimeoutMs?: number;
   /** Start with assist mode on (the guide clicks safe controls for the user on Next). The user can still switch it off; it is not remembered. */

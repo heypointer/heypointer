@@ -5,7 +5,7 @@ import {
   AuditEntrySchema as OpAuditEntrySchema, AccountUserSchema, InviteInfoResponseSchema,
 } from "../src/index.js";
 import { WalkthroughSchema, WalkthroughRequestSchema, TargetSchema, PublishKbRequestSchema, PublishKbResponseSchema, CONTRACT_VERSION, CLIENT_ID_HEADER, CLIENT_ID_PATTERN, ClientIdSchema, CreateClientRequestSchema, ErrorResponseSchema,
-  ADMIN_KEY_PATTERN, CreateKeyRequestSchema, DEFAULT_PLAN, DEFAULT_TENANT_ID, ENROLL_CODE_PATTERN, GUIDE_KEY_PATTERN, KEY_ID_PATTERN, KEY_SECRET_PATTERN, PlanLimitsSchema, PlanNameSchema, TENANT_ID_PATTERN, TENANT_ROUTES, TenantSelfResponseSchema,
+  ADMIN_KEY_PATTERN, CreateKeyRequestSchema, DEFAULT_PLAN, DEFAULT_TENANT_ID, ENROLL_CODE_PATTERN, GUIDE_KEY_PATTERN, KEY_ID_PATTERN, KeyScopeSchema, MCP_KEY_PATTERN, MCP_SCOPES, McpScopeSchema, KeySummarySchema, CreateKeyResponseSchema, KEY_SECRET_PATTERN, PlanLimitsSchema, PlanNameSchema, TENANT_ID_PATTERN, TENANT_ROUTES, TenantSelfResponseSchema,
   ACCOUNT_ROUTES, CSRF_HEADER, CliLoginResponseSchema, CreateInviteRequestSchema, DEVICE_CODE_PATTERN, DeviceStartRequestSchema, DeviceTokenResponseSchema, ErrorCodeSchema, INVITE_ID_PATTERN, INVITE_TOKEN_PATTERN,
   LoginResponseSchema, PlanUsageSchema, RECOVERY_CODE_PATTERN, RESET_TOKEN_PATTERN, SESSION_COOKIE, USER_CODE_PATTERN, USER_ID_PATTERN, AuditEntrySchema, SessionResponseSchema, TotpVerifyResponseSchema } from "../src/index.js";
 
@@ -58,8 +58,8 @@ describe("PublishKbRequestSchema", () => {
     vectors: [{ nodeId: "n1", text: "a", vector: [0.1, 0.2] }, { nodeId: "n2", text: "b", vector: [0.3, 0.4] }],
   });
 
-  it("accepts a consistent scanned knowledge base and is version 1.11.0", () => {
-    expect(CONTRACT_VERSION).toBe("1.11.0");
+  it("accepts a consistent scanned knowledge base and is version 1.14.0", () => {
+    expect(CONTRACT_VERSION).toBe("1.14.0");
     expect(PublishKbRequestSchema.safeParse(kb()).success).toBe(true);
   });
   it("refuses unknown top-level fields", () => {
@@ -85,8 +85,8 @@ describe("PublishKbRequestSchema", () => {
 describe("app clients", () => {
   it("names the header and the id format", () => {
     expect(CLIENT_ID_HEADER).toBe("X-HeyPointer-Client");
-    expect(CLIENT_ID_PATTERN.test("gfc_0123456789abcdef01234567")).toBe(true);
-    for (const bad of ["", "gfc_", "gfc_0123456789ABCDEF01234567", "gfc_0123456789abcdef0123456", "gfc_0123456789abcdef012345678", "xfc_0123456789abcdef01234567", " gfc_0123456789abcdef01234567"]) {
+    expect(CLIENT_ID_PATTERN.test("hpc_0123456789abcdef01234567")).toBe(true);
+    for (const bad of ["", "hpc_", "hpc_0123456789ABCDEF01234567", "hpc_0123456789abcdef0123456", "hpc_0123456789abcdef012345678", "xfc_0123456789abcdef01234567", " hpc_0123456789abcdef01234567"]) {
       expect(ClientIdSchema.safeParse(bad).success, bad).toBe(false);
     }
   });
@@ -109,14 +109,58 @@ describe("tenants, keys and plans", () => {
     expect(TENANT_ID_PATTERN.test(DEFAULT_TENANT_ID)).toBe(true);
     expect(TENANT_ID_PATTERN.test(`tn_${hex(12)}`)).toBe(true);
     for (const bad of [`tn_${hex(11)}`, `tn_${hex(13)}`, `TN_${hex(12)}`, `tn_${hex(12, "g")}`]) expect(TENANT_ID_PATTERN.test(bad), bad).toBe(false);
+    expect(ADMIN_KEY_PATTERN.test(`hpk_a_${hex(48)}`)).toBe(true);
+    expect(GUIDE_KEY_PATTERN.test(`hpk_g_${hex(48)}`)).toBe(true);
+    expect(KEY_SECRET_PATTERN.test(`hpk_a_${hex(48)}`) && KEY_SECRET_PATTERN.test(`hpk_g_${hex(48)}`)).toBe(true);
+    for (const bad of [`hpk_x_${hex(48)}`, `hpk_a_${hex(47)}`, `hpk_a_${hex(49)}`, `hpk_a_${hex(48, "G")}`, `hpc_${hex(24)}`]) expect(KEY_SECRET_PATTERN.test(bad), bad).toBe(false);
+    expect(ADMIN_KEY_PATTERN.test(`hpk_g_${hex(48)}`)).toBe(false);
+    expect(MCP_KEY_PATTERN.test(`hpk_m_${hex(48)}`)).toBe(true);
+    expect(KEY_SECRET_PATTERN.test(`hpk_m_${hex(48)}`)).toBe(true);
+    for (const bad of [`hpk_m_${hex(47)}`, `hpk_m_${hex(49)}`, `hpk_m_${hex(48, "G")}`, `hpk_a_${hex(48)}`, `hpk_g_${hex(48)}`]) expect(MCP_KEY_PATTERN.test(bad), bad).toBe(false);
+    expect(ADMIN_KEY_PATTERN.test(`hpk_m_${hex(48)}`) || GUIDE_KEY_PATTERN.test(`hpk_m_${hex(48)}`)).toBe(false);
+    expect(KEY_ID_PATTERN.test(`kid_${hex(12)}`)).toBe(true);
+    expect(ENROLL_CODE_PATTERN.test(`hpe_${hex(32)}`)).toBe(true);
+    expect(ENROLL_CODE_PATTERN.test(`hpe_${hex(31)}`)).toBe(false);
+  });
+
+  it("has an mcp key kind besides admin and guide, and the key request accepts it (1.12.0)", () => {
+    expect(KeyScopeSchema.options).toEqual(["admin", "guide", "mcp"]);
+    expect(CreateKeyRequestSchema.safeParse({ name: "agent", scope: "mcp" }).success).toBe(true);
+    expect(CreateKeyRequestSchema.safeParse({ name: "agent", scope: "agent" }).success).toBe(false);
+  });
+
+  it("still accepts every identifier issued before the hp prefixes (gf*), and refuses mixed or malformed ones", () => {
+    expect(CLIENT_ID_PATTERN.test("gfc_0123456789abcdef01234567")).toBe(true);
+    expect(CLIENT_ID_PATTERN.test("gfc_ea6fae0123456789abcdef01")).toBe(true);
     expect(ADMIN_KEY_PATTERN.test(`gfk_a_${hex(48)}`)).toBe(true);
     expect(GUIDE_KEY_PATTERN.test(`gfk_g_${hex(48)}`)).toBe(true);
     expect(KEY_SECRET_PATTERN.test(`gfk_a_${hex(48)}`) && KEY_SECRET_PATTERN.test(`gfk_g_${hex(48)}`)).toBe(true);
-    for (const bad of [`gfk_x_${hex(48)}`, `gfk_a_${hex(47)}`, `gfk_a_${hex(49)}`, `gfk_a_${hex(48, "G")}`, `gfc_${hex(24)}`]) expect(KEY_SECRET_PATTERN.test(bad), bad).toBe(false);
-    expect(ADMIN_KEY_PATTERN.test(`gfk_g_${hex(48)}`)).toBe(false);
-    expect(KEY_ID_PATTERN.test(`kid_${hex(12)}`)).toBe(true);
     expect(ENROLL_CODE_PATTERN.test(`gfe_${hex(32)}`)).toBe(true);
-    expect(ENROLL_CODE_PATTERN.test(`gfe_${hex(31)}`)).toBe(false);
+    expect(INVITE_TOKEN_PATTERN.test(`gfi_${hex(32)}`)).toBe(true);
+    expect(RESET_TOKEN_PATTERN.test(`gfr_${hex(32)}`)).toBe(true);
+    expect(DEVICE_CODE_PATTERN.test(`gfd_${hex(40)}`)).toBe(true);
+    // the MCP key never had a legacy form, and a legacy admin key is not a guide key
+    expect(KEY_SECRET_PATTERN.test(`gfk_m_${hex(48)}`)).toBe(false);
+    expect(GUIDE_KEY_PATTERN.test(`gfk_a_${hex(48)}`)).toBe(false);
+    expect(ADMIN_KEY_PATTERN.test(`gfk_g_${hex(48)}`)).toBe(false);
+    for (const bad of ["gfc_short", `gfk_x_${hex(48)}`, `gfq_${hex(24)}`, `hpc-${hex(24)}`, `gfc_${hex(23)}`]) {
+      expect(CLIENT_ID_PATTERN.test(bad) || KEY_SECRET_PATTERN.test(bad), bad).toBe(false);
+    }
+  });
+
+  it("lets an MCP key choose its access and carries its expiry (1.13.0), all optional so older clients still parse", () => {
+    expect(MCP_SCOPES).toEqual(["mcp:read", "mcp:write"]);
+    expect(McpScopeSchema.safeParse("mcp:admin").success).toBe(false);
+    expect(CreateKeyRequestSchema.safeParse({ name: "agent", scope: "mcp", mcpScopes: ["mcp:read", "mcp:write"] }).success).toBe(true);
+    expect(CreateKeyRequestSchema.safeParse({ name: "agent", scope: "mcp", mcpScopes: [] }).success).toBe(false);
+    expect(CreateKeyRequestSchema.safeParse({ name: "agent", scope: "mcp", mcpScopes: ["write"] }).success).toBe(false);
+    const summary = { keyId: "kid_0123456789ab", scope: "mcp", name: "n", prefix: "hpk_m_12345678", createdAt: "2026-11-22T00:00:00Z", lastUsedAt: null, revoked: false };
+    expect(KeySummarySchema.safeParse(summary).success).toBe(true);
+    expect(KeySummarySchema.safeParse({ ...summary, expiresAt: "2026-11-29T00:00:00Z", mcpScopes: ["mcp:read"] }).success).toBe(true);
+    expect(KeySummarySchema.safeParse({ ...summary, expiresAt: null }).success).toBe(true);
+    const created = { keyId: "kid_0123456789ab", scope: "mcp", secret: `hpk_m_${hex(48)}`, name: "n", createdAt: "2026-11-22T00:00:00Z" };
+    expect(CreateKeyResponseSchema.safeParse(created).success).toBe(true);
+    expect(CreateKeyResponseSchema.safeParse({ ...created, expiresAt: "2026-11-29T00:00:00Z", mcpScopes: ["mcp:read"] }).success).toBe(true);
   });
 
   it("has the enrollment and key routes, and none of the operator ones", () => {
@@ -148,10 +192,10 @@ describe("accounts and login (1.10.0)", () => {
     expect(USER_ID_PATTERN.test(`usr_${hex(12)}`)).toBe(true);
     expect(USER_ID_PATTERN.test(`usr_${hex(11)}`)).toBe(false);
     expect(INVITE_ID_PATTERN.test(`inv_${hex(12)}`)).toBe(true);
-    expect(INVITE_TOKEN_PATTERN.test(`gfi_${hex(32)}`)).toBe(true);
-    expect(INVITE_TOKEN_PATTERN.test(`gfi_${hex(31)}`)).toBe(false);
-    expect(RESET_TOKEN_PATTERN.test(`gfr_${hex(32)}`)).toBe(true);
-    expect(DEVICE_CODE_PATTERN.test(`gfd_${hex(40)}`)).toBe(true);
+    expect(INVITE_TOKEN_PATTERN.test(`hpi_${hex(32)}`)).toBe(true);
+    expect(INVITE_TOKEN_PATTERN.test(`hpi_${hex(31)}`)).toBe(false);
+    expect(RESET_TOKEN_PATTERN.test(`hpr_${hex(32)}`)).toBe(true);
+    expect(DEVICE_CODE_PATTERN.test(`hpd_${hex(40)}`)).toBe(true);
     expect(RECOVERY_CODE_PATTERN.test("0a1b2-3c4d5")).toBe(true);
     expect(RECOVERY_CODE_PATTERN.test("0A1B2-3C4D5")).toBe(false);
     expect([SESSION_COOKIE, CSRF_HEADER]).toEqual(["hp_session", "X-HeyPointer-CSRF"]);
@@ -182,9 +226,9 @@ describe("accounts and login (1.10.0)", () => {
   });
 
   it("delivers a device key only when approved, and only an admin key", () => {
-    const key = { keyId: `kid_${hex(12)}`, scope: "admin", secret: `gfk_a_${hex(48)}` };
+    const key = { keyId: `kid_${hex(12)}`, scope: "admin", secret: `hpk_a_${hex(48)}` };
     expect(DeviceTokenResponseSchema.safeParse({ status: "approved", tenantId: DEFAULT_TENANT_ID, tenantName: "x", key }).success).toBe(true);
-    expect(DeviceTokenResponseSchema.safeParse({ status: "approved", tenantId: DEFAULT_TENANT_ID, tenantName: "x", key: { ...key, scope: "guide", secret: `gfk_g_${hex(48)}` } }).success).toBe(false);
+    expect(DeviceTokenResponseSchema.safeParse({ status: "approved", tenantId: DEFAULT_TENANT_ID, tenantName: "x", key: { ...key, scope: "guide", secret: `hpk_g_${hex(48)}` } }).success).toBe(false);
     expect(DeviceTokenResponseSchema.safeParse({ status: "approved", tenantId: DEFAULT_TENANT_ID, tenantName: "x" }).success).toBe(false);
     expect(DeviceTokenResponseSchema.safeParse({ status: "pending", interval: 5 }).success).toBe(true);
     expect(DeviceTokenResponseSchema.safeParse({ status: "pending" }).success).toBe(false);

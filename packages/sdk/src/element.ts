@@ -7,7 +7,7 @@ import type { ColorScheme, HeyPointerTheme } from './theme';
 export const HEYPOINTER_TAG = 'heypointer-assistant';
 
 /**
- * `<heypointer-assistant base-url="https://api.example.com" client-id="gfc_...">`: the one integration surface
+ * `<heypointer-assistant base-url="https://api.example.com" client-id="hpc_...">`: the one integration surface
  * every web framework shares. React, Vue, Angular and Svelte render this element; none of
  * them re-implement the player.
  *

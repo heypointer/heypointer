@@ -9,7 +9,7 @@ export function App() {
   return (
     <>
       {/* your app */}
-      <HeyPointerAssistant baseUrl="https://your-heypointer-server" clientId="gfc_..." />
+      <HeyPointerAssistant baseUrl="https://your-heypointer-server" clientId="hpc_..." />
     </>
   );
 }
@@ -18,7 +18,7 @@ export function App() {
 | Prop | Meaning |
 |---|---|
 | `baseUrl` | HeyPointer API origin (required). Changing it remounts the guide. |
-| `clientId` | Client id from `heypointer init` (`gfc_` + 24 hex, public). The server refuses guide requests without a valid one. |
+| `clientId` | Client id from `heypointer init` (`hpc_` + 24 hex, public). The server refuses guide requests without a valid one. |
 | `targetTimeoutMs` | How long to wait for a target that appears late (default 1500). |
 | `assist` | Start with assist mode on. The user can switch it off in the card; it is not remembered. See the [SDK README](../sdk/README.md#assist-mode). |
 | `labels` | Override any user-visible string (translations). Plain text with `{placeholders}`. See [Customizing](../../docs/CUSTOMIZING.md). |
@@ -36,7 +36,7 @@ A `ref` gives access to the live player: `ref.current?.player()?.open()`.
 npm install @heypointerhq/react react react-dom
 ```
 
-`@heypointerhq/sdk` comes with it. `react` and `react-dom` 18 or newer are peer dependencies. Version 0.2.0. The packages are still `private` (not on a registry); until publishing is approved, install the tarball: `npm pack -w @heypointerhq/react`, then `npm install ./heypointer-react-0.2.0.tgz`. See [docs/PACKAGES.md](../../docs/PACKAGES.md). Install `@heypointerhq/sdk` and `@heypointerhq/contracts` tarballs the same way.
+`@heypointerhq/sdk` comes with it. `react` and `react-dom` 18 or newer are peer dependencies. Version 0.2.1. Install it with `npm install @heypointerhq/react`; `@heypointerhq/sdk` and `@heypointerhq/contracts` come with it.
 
 ## Next.js and server rendering
 
@@ -47,3 +47,7 @@ The package is marked `'use client'` and registers the element in an effect, so 
 Verified: 6 tests that mount the real player in jsdom, cover `baseUrl` changes, unmount and server rendering. Peer dependencies: `react` and `react-dom` 18 or newer.
 
 `npm test -w packages/react`
+
+---
+
+[Website](https://heypointer.com/) · [Docs](https://heypointer.com/docs/) · [X](https://x.com/heypointer) · [Instagram](https://www.instagram.com/heypointer/) · Support: [Buy Me a Coffee](https://buymeacoffee.com/heypointer) · [Ko-fi](https://ko-fi.com/heypointer)

@@ -1,6 +1,6 @@
 {
   "name": "@heypointerhq/react",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
   "description": "React component for HeyPointer: renders the shared <heypointer-assistant> element and manages its lifecycle.",
@@ -47,7 +47,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@heypointerhq/sdk": "^0.2.0"
+    "@heypointerhq/sdk": "^0.2.1"
   },
   "peerDependencies": {
     "react": ">=18",

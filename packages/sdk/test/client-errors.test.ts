@@ -21,7 +21,7 @@ describe('HeyPointerClient when the server cannot be reached', () => {
 });
 
 describe('HeyPointerClient client id', () => {
-  const ID = 'gfc_0123456789abcdef01234567';
+  const ID = 'hpc_0123456789abcdef01234567';
   const ok = JSON.stringify({ status: 'insufficient_evidence', message: 'm', steps: [], contractVersion: '1.7.0' });
   const recording = (res: () => Response) => {
     const calls: { url: string; init: RequestInit }[] = [];
@@ -46,8 +46,16 @@ describe('HeyPointerClient client id', () => {
     expect(calls).toHaveLength(1);
     expect(Object.keys(calls[0].init.headers as Record<string, string>).map((k) => k.toLowerCase())).not.toContain('x-heypointer-client');
   });
+  it('still sends a client id issued before the hp prefixes (gfc_), exactly as an hpc_ one', async () => {
+    for (const id of ['gfc_0123456789abcdef01234567', 'gfc_ea6fae0123456789abcdef01', 'hpc_0123456789abcdef01234567']) {
+      const { calls, f } = recording(() => new Response(ok));
+      await new HeyPointerClient({ baseUrl: 'http://x.test', clientId: id, fetch: f }).requestWalkthrough('g').catch(() => undefined);
+      expect(calls).toHaveLength(1);
+      expect((calls[0].init.headers as Record<string, string>)['X-HeyPointer-Client']).toBe(id);
+    }
+  });
   it('rejects a malformed id without calling the server', async () => {
-    for (const bad of ['gfc_short', 'abc', 'GFC_0123456789abcdef01234567', 'gfc_0123456789abcdef0123456g']) {
+    for (const bad of ['hpc_short', 'abc', 'GFC_0123456789abcdef01234567', 'hpc_0123456789abcdef0123456g']) {
       const { calls, f } = recording(() => new Response(ok));
       await expect(new HeyPointerClient({ baseUrl: 'http://x.test', clientId: bad, fetch: f }).requestWalkthrough('g')).rejects.toThrow(/client ID looks wrong/);
       expect(calls).toHaveLength(0);

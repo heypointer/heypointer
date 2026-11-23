@@ -15,7 +15,7 @@ Scenario: **Ledger**, a dense records table with repeated Edit and Archive butto
 npm run dev -w samples/vue-records
 ```
 
-Open the page with `?api=http://localhost:8791&client=gfc_...` (the server refuses guide requests without a valid client id; get one from `heypointer init`). The id can also come from `VITE_HEYPOINTER_CLIENT_ID`. The API address defaults to that and can be set with `?api=` or `VITE_HEYPOINTER_API`.
+Open the page with `?api=http://localhost:8791&client=hpc_...` (the server refuses guide requests without a valid client id; get one from `heypointer init`). The id can also come from `VITE_HEYPOINTER_CLIENT_ID`. The API address defaults to that and can be set with `?api=` or `VITE_HEYPOINTER_API`.
 
 ## Test
 

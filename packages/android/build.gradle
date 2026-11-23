@@ -10,7 +10,7 @@ plugins {
 // Applied by a host app's Gradle build, which supplies the plugin versions. See README.md.
 // Needs Android Gradle Plugin 7.1 or newer (publishing.singleVariant).
 group = 'com.heypointer'
-version = '0.2.0'
+version = '0.2.1'
 
 android {
     namespace 'com.heypointer.android'
@@ -39,7 +39,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
 }
 
-// ./gradlew :heypointer-android:publishToMavenLocal  ->  ~/.m2/repository/com/heypointer/heypointer-android/0.2.0/
+// ./gradlew :heypointer-android:publishToMavenLocal  ->  ~/.m2/repository/com/heypointer/heypointer-android/0.2.1/
 // ./gradlew :heypointer-android:publishReleasePublicationToCentralStagingRepository  ->  build/central-staging/
 // Nothing here uploads to a remote repository. The maintainers zip build/central-staging and upload it to the
 // Sonatype Central Portal by hand.
@@ -79,7 +79,7 @@ afterEvaluate {
                 artifact tasks.named('javadocJar')
                 groupId = 'com.heypointer'
                 artifactId = 'heypointer-android'
-                version = '0.2.0'
+                version = '0.2.1'
                 pom {
                     name = 'HeyPointer for Android'
                     description = 'Walks a user through the real screen of an Android app, one control at a time. It asks a HeyPointer server for grounded steps, spotlights the real control and never taps or types for the user.'

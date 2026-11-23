@@ -37,13 +37,13 @@ describe('<heypointer-assistant>', () => {
       seen.push((init.headers as Record<string, string>)['X-HeyPointer-Client'] ?? '');
       return new Response('{}', { status: 500 });
     });
-    const el = make({ 'base-url': 'http://localhost:1', 'client-id': 'gfc_0123456789abcdef01234567' });
+    const el = make({ 'base-url': 'http://localhost:1', 'client-id': 'hpc_0123456789abcdef01234567' });
     await el.player!.ask('g');
     const first = el.player;
-    el.setAttribute('client-id', 'gfc_aaaaaaaaaaaaaaaaaaaaaaaa');
+    el.setAttribute('client-id', 'hpc_aaaaaaaaaaaaaaaaaaaaaaaa');
     expect(el.player).not.toBe(first);
     await el.player!.ask('g');
-    expect(seen).toEqual(['gfc_0123456789abcdef01234567', 'gfc_aaaaaaaaaaaaaaaaaaaaaaaa']);
+    expect(seen).toEqual(['hpc_0123456789abcdef01234567', 'hpc_aaaaaaaaaaaaaaaaaaaaaaaa']);
   });
   it('destroys the player on removal', () => {
     const el = make();

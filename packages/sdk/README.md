@@ -15,20 +15,20 @@ import { HeyPointer } from "@heypointerhq/sdk";          // ESM, types included,
 import { defineHeyPointerElement } from "@heypointerhq/sdk/element";   // registers <heypointer-assistant> when you call it
 ```
 
-For a plain `<script>` tag, copy `node_modules/@heypointerhq/sdk/dist/heypointer.global.js` (export `@heypointerhq/sdk/global`) to your static files. Version 0.2.0. The packages are still `private` (not on a registry); until publishing is approved, install the tarball: `npm pack -w @heypointerhq/sdk`, then `npm install ./heypointer-sdk-0.2.0.tgz`. See [docs/PACKAGES.md](../../docs/PACKAGES.md).
+For a plain `<script>` tag, copy `node_modules/@heypointerhq/sdk/dist/heypointer.global.js` (export `@heypointerhq/sdk/global`) to your static files. Version 0.2.1. Install it with `npm install @heypointerhq/sdk`. See [docs/PACKAGES.md](../../docs/PACKAGES.md).
 
 ## Add it to an app
 
 **Script tag** (any web app, no build step):
 
 ```html
-<script src="https://your-cdn/heypointer.global.js" data-base-url="https://your-heypointer-server" data-client-id="gfc_..." defer></script>
+<script src="https://your-cdn/heypointer.global.js" data-base-url="https://your-heypointer-server" data-client-id="hpc_..." defer></script>
 ```
 
 **Global component** (any framework that can render a custom element):
 
 ```html
-<heypointer-assistant base-url="https://your-heypointer-server" client-id="gfc_..."></heypointer-assistant>
+<heypointer-assistant base-url="https://your-heypointer-server" client-id="hpc_..."></heypointer-assistant>
 ```
 
 Attributes: `base-url` (required), `client-id` (required in practice), `target-timeout-ms`, `assist`, and the customization attributes `labels`, `theme`, `color-scheme`, `dir`, `lang`, `launcher`, `launcher-side` (see [Customizing](#customizing)). Changing `base-url`, `client-id`, `assist` or `target-timeout-ms` remounts; the customization attributes update in place; removing the element destroys the guide. `element.open()`, `element.close()` and `element.ask(goal)` drive it; `element.player` is the live `HeyPointer`.
@@ -37,14 +37,14 @@ Attributes: `base-url` (required), `client-id` (required in practice), `target-t
 
 ```ts
 import { HeyPointer } from "@heypointerhq/sdk";
-const gf = new HeyPointer({ baseUrl: "http://localhost:8791", clientId: "gfc_..." });
+const gf = new HeyPointer({ baseUrl: "http://localhost:8791", clientId: "hpc_..." });
 ```
 
 Options: `baseUrl`, `clientId`, `fetch`, `recorderFactory`, `speechSupported`, `targetTimeoutMs` (default 1500), `mountTo`, `assist`, `onAssist`, `labels`, `theme`, `colorScheme`, `dir`, `lang`, `launcher`, `launcherSide`. Methods: `open()`, `close()`, `ask(goal)`, `next()`, `prev()`, `setLabels()`, `setTheme()`, `setColorScheme()`, `setLayout()`, `destroy()`. Events (bubbling, composed, on the guide's root): `heypointer:open`, `heypointer:close`, `heypointer:assist`.
 
 ### Client ID
 
-The server only answers guide requests that carry a client id, sent as the `X-HeyPointer-Client` header on `POST /api/walkthrough`. You get one from `heypointer init`. It looks like `gfc_` plus 24 hex characters and is **public**, like a Stripe publishable key: it is fine in page source, and the server limits it with allowed origins and rate limits. Never put the server API key in an app.
+The server only answers guide requests that carry a client id, sent as the `X-HeyPointer-Client` header on `POST /api/walkthrough`. You get one from `heypointer init`. It looks like `hpc_` plus 24 hex characters and is **public**, like a Stripe publishable key: it is fine in page source, and the server limits it with allowed origins and rate limits. Never put the server API key in an app.
 
 An id that is clearly malformed is rejected in the browser without a request. A missing or unknown id, a page origin the client does not allow, and rate limiting each show a plain message in the guide (never the raw server response). Transcription requests do not carry the id.
 
@@ -102,7 +102,7 @@ Click through your app once and get a flow draft: `author: true` (or `data-autho
 Labels (every string, so translation is configuration), theme (colors, radius, font as `--hp-*` CSS variables or a validated `theme` option, with dark-scheme counterparts and a forced `colorScheme`), stable `::part()` names, right-to-left, and a hideable launcher with `open()`/`close()` for your own button. Full reference, with the rules for what a value may contain and the Android equivalents: [docs/CUSTOMIZING.md](../../docs/CUSTOMIZING.md).
 
 ```html
-<heypointer-assistant base-url="..." client-id="gfc_..."
+<heypointer-assistant base-url="..." client-id="hpc_..."
   labels='{"next":"Weiter","stepProgress":"Schritt {current} von {total}"}'
   theme='{"accent":"#6d28d9","accentFg":"#ffffff","dark":{"accent":"#a78bfa","accentFg":"#1e1b4b"}}'></heypointer-assistant>
 ```
@@ -126,3 +126,7 @@ The built package (`dist/`, the script-tag bundle, and the React and Vue wrapper
 ## Limits
 
 Only the web DOM is supported. Real microphone capture is untested. Targets inside iframes or other shadow roots are not resolved. Browser coverage is Chromium, Firefox and WebKit on the shop and global-bundle specs, Chromium elsewhere.
+
+---
+
+[Website](https://heypointer.com/) · [Docs](https://heypointer.com/docs/) · [X](https://x.com/heypointer) · [Instagram](https://www.instagram.com/heypointer/) · Support: [Buy Me a Coffee](https://buymeacoffee.com/heypointer) · [Ko-fi](https://ko-fi.com/heypointer)

@@ -6,14 +6,14 @@ import type { Walkthrough } from './types';
 
 export interface ClientOptions {
   baseUrl: string;
-  /** Publishable client id from `heypointer init` (`gfc_` + 24 hex). Not a secret; sent as X-HeyPointer-Client. */
+  /** Publishable client id from `heypointer init` (`hpc_` + 24 hex). Not a secret; sent as X-HeyPointer-Client. */
   clientId?: string;
   fetch?: typeof fetch;
   /** Looks up a user-visible message by label key (host overrides, translations). Defaults to the English labels. */
   text?: (key: LabelKey, vars?: Record<string, string | number>) => string;
 }
 
-export const CLIENT_ID_PATTERN = /^gfc_[0-9a-f]{24}$/;
+export const CLIENT_ID_PATTERN = /^(?:hpc|gfc)_[0-9a-f]{24}$/;
 export const CLIENT_HEADER = 'X-HeyPointer-Client';
 
 export const MSG_CLIENT_REQUIRED = DEFAULT_LABELS.clientRequired;

@@ -45,7 +45,7 @@
     <string name="heypointer_assist_clicked">Clicked \"%1$s\" for you.</string>
     <string name="heypointer_assist_couldnt_tap">I couldn\'t tap “%1$s” for you. Tap it yourself, then press Next.</string>
     <string name="heypointer_client_required">HeyPointer needs a client ID. Run heypointer init and pass the id to HeyPointer.install.</string>
-    <string name="heypointer_client_malformed">The HeyPointer client ID looks wrong (it should start with gfc_). Check it against what heypointer init printed.</string>
+    <string name="heypointer_client_malformed">The HeyPointer client ID looks wrong (it should start with hpc_). Check it against what heypointer init printed.</string>
     <string name="heypointer_client_invalid">HeyPointer does not recognise this client ID. Check that it matches the one heypointer init gave you.</string>
     <string name="heypointer_client_origin">This app is not allowed to use this HeyPointer client ID. Ask the HeyPointer admin to check the client\'s allowed origins.</string>
     <string name="heypointer_rate_limited">HeyPointer is getting too many requests right now. Wait a moment and try again.</string>

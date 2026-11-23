@@ -1,6 +1,6 @@
 {
   "name": "@heypointerhq/sdk",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
   "description": "HeyPointer in-app guide: turns a goal into a spotlight-and-tooltip walkthrough of the real page. ESM, custom element and script-tag bundle; styles are compiled in.",
@@ -64,7 +64,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@heypointerhq/contracts": "^0.2.0"
+    "@heypointerhq/contracts": "^0.2.1"
   },
   "devDependencies": {
     "jsdom": "^25.0.0"

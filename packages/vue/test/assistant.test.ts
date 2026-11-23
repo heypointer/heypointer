@@ -43,8 +43,8 @@ describe('<HeyPointerAssistant />', () => {
   });
 
   it('passes clientId through as client-id and omits it when absent', async () => {
-    const html = await renderToString(createSSRApp({ render: () => h(HeyPointerAssistant, { baseUrl: 'http://localhost:1', clientId: 'gfc_0123456789abcdef01234567' }) }));
-    expect(html).toContain('client-id="gfc_0123456789abcdef01234567"');
+    const html = await renderToString(createSSRApp({ render: () => h(HeyPointerAssistant, { baseUrl: 'http://localhost:1', clientId: 'hpc_0123456789abcdef01234567' }) }));
+    expect(html).toContain('client-id="hpc_0123456789abcdef01234567"');
     const bare = await renderToString(createSSRApp({ render: () => h(HeyPointerAssistant, { baseUrl: 'http://localhost:1' }) }));
     expect(bare).not.toContain('client-id');
   });

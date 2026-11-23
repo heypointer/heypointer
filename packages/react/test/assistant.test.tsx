@@ -53,11 +53,11 @@ describe('<HeyPointerAssistant />', () => {
   });
 
   it('passes clientId through as client-id and omits it when absent', async () => {
-    const el = await mount(<HeyPointerAssistant baseUrl="http://localhost:1" clientId="gfc_0123456789abcdef01234567" />);
-    expect(el.querySelector('heypointer-assistant')!.getAttribute('client-id')).toBe('gfc_0123456789abcdef01234567');
+    const el = await mount(<HeyPointerAssistant baseUrl="http://localhost:1" clientId="hpc_0123456789abcdef01234567" />);
+    expect(el.querySelector('heypointer-assistant')!.getAttribute('client-id')).toBe('hpc_0123456789abcdef01234567');
     await act(async () => root!.render(<HeyPointerAssistant baseUrl="http://localhost:1" />));
     expect(document.querySelector('heypointer-assistant')!.hasAttribute('client-id')).toBe(false);
-    expect(renderToString(<HeyPointerAssistant baseUrl="http://localhost:1" clientId="gfc_0123456789abcdef01234567" />)).toContain('client-id="gfc_0123456789abcdef01234567"');
+    expect(renderToString(<HeyPointerAssistant baseUrl="http://localhost:1" clientId="hpc_0123456789abcdef01234567" />)).toContain('client-id="hpc_0123456789abcdef01234567"');
   });
 
   it('removes the player on unmount', async () => {

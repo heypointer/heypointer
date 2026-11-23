@@ -9,13 +9,13 @@ import type { PropType } from 'vue';
  * `@heypointerhq/sdk`; this component only manages the element's lifecycle in Vue.
  * Nuxt-safe: registration happens in `onMounted`, so SSR emits an inert tag.
  *
- *   <HeyPointerAssistant base-url="https://heypointer.example.com" client-id="gfc_..." />
+ *   <HeyPointerAssistant base-url="https://heypointer.example.com" client-id="hpc_..." />
  */
 export const HeyPointerAssistant = defineComponent({
   name: 'HeyPointerAssistant',
   props: {
     baseUrl: { type: String, required: true },
-    /** Publishable client id from `heypointer init` (`gfc_` + 24 hex). */
+    /** Publishable client id from `heypointer init` (`hpc_` + 24 hex). */
     clientId: { type: String, default: '' },
     targetTimeoutMs: { type: Number, default: 0 },
     /** Start with assist mode on. The user can still switch it off; it is not remembered. */

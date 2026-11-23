@@ -57,7 +57,7 @@ export const DEFAULT_LABELS = {
   clientRequired: 'HeyPointer needs a client ID. Run heypointer init or pass data-client-id.',
   clientInvalid: 'HeyPointer does not recognise this client ID. Check that it matches the one heypointer init gave you.',
   clientOrigin: "This site's address is not allowed for this HeyPointer client ID. Ask the HeyPointer admin to add it to the client's allowed origins.",
-  clientMalformed: 'The HeyPointer client ID looks wrong (it should start with gfc_). Check data-client-id against what heypointer init printed.',
+  clientMalformed: 'The HeyPointer client ID looks wrong (it should start with hpc_). Check data-client-id against what heypointer init printed.',
   rateLimited: 'HeyPointer is getting too many requests right now. Wait a moment and try again.',
   serverUnreachable: 'Cannot reach the HeyPointer server at {host}. Check that it is running and the address is right.',
   requestFailed: 'Walkthrough request failed ({status})',

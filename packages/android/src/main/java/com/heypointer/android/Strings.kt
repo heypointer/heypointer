@@ -53,7 +53,7 @@ internal enum class Str(val res: String, val default: String, val argCount: Int 
     ASSIST_CLICKED("heypointer_assist_clicked", "Clicked \"%1\$s\" for you.", argCount = 1),
     ASSIST_COULDNT_TAP("heypointer_assist_couldnt_tap", "I couldn't tap “%1\$s” for you. Tap it yourself, then press Next.", argCount = 1),
     CLIENT_REQUIRED("heypointer_client_required", "HeyPointer needs a client ID. Run heypointer init and pass the id to HeyPointer.install."),
-    CLIENT_MALFORMED("heypointer_client_malformed", "The HeyPointer client ID looks wrong (it should start with gfc_). Check it against what heypointer init printed."),
+    CLIENT_MALFORMED("heypointer_client_malformed", "The HeyPointer client ID looks wrong (it should start with hpc_). Check it against what heypointer init printed."),
     CLIENT_INVALID("heypointer_client_invalid", "HeyPointer does not recognise this client ID. Check that it matches the one heypointer init gave you."),
     CLIENT_ORIGIN("heypointer_client_origin", "This app is not allowed to use this HeyPointer client ID. Ask the HeyPointer admin to check the client's allowed origins."),
     RATE_LIMITED("heypointer_rate_limited", "HeyPointer is getting too many requests right now. Wait a moment and try again."),

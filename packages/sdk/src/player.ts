@@ -16,7 +16,7 @@ import type { Walkthrough, WalkthroughStep } from './types';
 
 export interface HeyPointerOptions {
   baseUrl: string;
-  /** Publishable client id from `heypointer init` (`gfc_` + 24 hex). */
+  /** Publishable client id from `heypointer init` (`hpc_` + 24 hex). */
   clientId?: string;
   fetch?: typeof fetch;
   recorderFactory?: () => AudioRecorder;

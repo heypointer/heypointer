@@ -6,7 +6,7 @@ import { rememberScript } from './author-loader';
 
 /**
  * Script-tag entry:
- *   <script src="heypointer.global.js" data-base-url="https://api.example.com" data-client-id="gfc_..." defer></script>
+ *   <script src="heypointer.global.js" data-base-url="https://api.example.com" data-client-id="hpc_..." defer></script>
  * mounts one assistant. Without `data-base-url` it only registers `<heypointer-assistant>`
  * and exposes `window.HeyPointerGlobal.HeyPointer` for manual setup.
  */

@@ -19,7 +19,7 @@ sequenceDiagram
 
 With a proxy the client ID never reaches the browser, so it behaves like a private credential. HeyPointer still checks it, applies its per-client rate limit and can revoke it.
 
-**A guide key is better for a proxy.** Your tenant can mint a `guide` key (`heypointer keys create --name my-backend --scope guide`, shown once). It is a real secret, can be rotated or revoked on its own, has its own rate limit, needs no origin rules, and the walkthrough route accepts it as `Authorization: Bearer gfk_g_...` instead of the client ID. It can only ask for walkthroughs; any other route answers 403. In the example below, replace the `x-heypointer-client` header with `authorization: \`Bearer ${process.env.HEYPOINTER_GUIDE_KEY}\``. Keep it in your backend's secret store, never in a page or an app.
+**A guide key is better for a proxy.** Your tenant can mint a `guide` key (`heypointer keys create --name my-backend --scope guide`, shown once). It is a real secret, can be rotated or revoked on its own, has its own rate limit, needs no origin rules, and the walkthrough route accepts it as `Authorization: Bearer hpk_g_...` instead of the client ID. It can only ask for walkthroughs; any other route answers 403. In the example below, replace the `x-heypointer-client` header with `authorization: \`Bearer ${process.env.HEYPOINTER_GUIDE_KEY}\``. Keep it in your backend's secret store, never in a page or an app.
 
 ## Wiring
 

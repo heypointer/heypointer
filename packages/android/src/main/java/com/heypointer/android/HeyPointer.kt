@@ -44,7 +44,7 @@ import kotlin.math.hypot
  * the real screen, one control at a time. It highlights; it never taps, types or submits for the user,
  * unless the user switches on "Assist" (off by default): then Next may tap a plain, safe control for them.
  *
- *     HeyPointer.install(this, "https://your-heypointer-server", "gfc_...")
+ *     HeyPointer.install(this, "https://your-heypointer-server", "hpc_...")
  *
  * Add it once per activity that hosts the screens you want guided. It adds a "Guide me" button and the overlay.
  *
@@ -151,7 +151,7 @@ class HeyPointer private constructor(
 
         /**
          * Returns null (and does nothing) when `baseUrl` is blank, so release builds can ship without a server.
-         * `clientId` is the publishable id from `heypointer init` (`gfc_` + 24 hex); the server refuses guide requests without a valid one.
+         * `clientId` is the publishable id from `heypointer init` (`hpc_` + 24 hex); the server refuses guide requests without a valid one.
          * Behind your own backend proxy, point `baseUrl` at it, pass `""` as `clientId` (the proxy adds it) and return your
          * auth from `headers` (called on a background thread for every request, so it may refresh a token).
          *

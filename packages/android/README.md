@@ -6,10 +6,10 @@ It only guides. It never taps, types into or submits anything for the user, unle
 
 ```kotlin
 // MainActivity.onCreate, after setContentView
-HeyPointer.install(this, "https://your-heypointer-server", "gfc_...")
+HeyPointer.install(this, "https://your-heypointer-server", "hpc_...")
 ```
 
-`install` adds a "Guide me" button and the overlay, and returns `null` when the URL is blank, so a release build can ship without a server. The third argument is the **client id** from `heypointer init` (`gfc_` plus 24 hex characters). It is public, like a Stripe publishable key: the server limits it by allowed origins and rate. Read it from a build config field rather than hard-coding it (see the Echo sample). `bottomMarginDp` stays an optional fourth argument.
+`install` adds a "Guide me" button and the overlay, and returns `null` when the URL is blank, so a release build can ship without a server. The third argument is the **client id** from `heypointer init` (`hpc_` plus 24 hex characters). It is public, like a Stripe publishable key: the server limits it by allowed origins and rate. Read it from a build config field rather than hard-coding it (see the Echo sample). `bottomMarginDp` stays an optional fourth argument.
 
 The id goes in an `X-HeyPointer-Client` header on the walkthrough request only. A malformed id is refused on the device without a request. A missing or unknown id, a client that does not allow the app, and rate limiting each show a plain message on the card (never the raw server reply). **Behind your own backend.** An APK can be unpacked, so its client id is extractable. To keep the id private, call your own server, which adds the id and applies your login: `HeyPointer.install(this, "https://api.example.com/guide", "", headers = { mapOf("Authorization" to "Bearer ${session.token()}") })`. `headers` is called on a background thread for every request, so it may refresh a token; `Content-Type`, `Content-Length`, `Host` and the client header cannot be overridden. See [docs/BACKEND_PROXY.md](../../docs/BACKEND_PROXY.md).
 
@@ -149,14 +149,14 @@ The release artifact is `com.heypointer:heypointer-android` (an AAR with sources
 
 ```groovy
 dependencies {
-    implementation 'com.heypointer:heypointer-android:0.2.0'
+    implementation 'com.heypointer:heypointer-android:0.2.1'
 }
 ```
 
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("com.heypointer:heypointer-android:0.2.0")
+    implementation("com.heypointer:heypointer-android:0.2.1")
 }
 ```
 
@@ -175,3 +175,7 @@ The library has no AndroidX dependency; it needs `minSdk 21` and compiles agains
 Verified: JVM tests, and a run inside a real app (the Echo music player sample) on an Android 14 emulator: rotation with a guide in progress (step and confirmed gate restored), Back, suggestions against a fake server, accessibility tree dump, and both source and artifact builds (also R8-minified). Not verified: a physical tablet or tablet emulator (placement is unit-tested only), TalkBack itself (only the accessibility tree was inspected, not speech or focus movement), the Android 13+ predictive-back path, process-death restore, Jetpack Compose (no `View` tree to search: it needs semantics), iOS (a separate adapter), or any app other than the one sample. A transparent overlay is added to the activity's window, so dialogs and popup menus (separate windows) cannot be highlighted.
 
 Customization (labels, theme, launcher): verified by JVM tests only so far. Not yet checked on a device: dark theme (`values-night`), a translated or right-to-left layout, a custom typeface, `showLauncher = false` with `open()`, and TalkBack reading the localized descriptions.
+
+---
+
+[Website](https://heypointer.com/) · [Docs](https://heypointer.com/docs/) · [X](https://x.com/heypointer) · [Instagram](https://www.instagram.com/heypointer/) · Support: [Buy Me a Coffee](https://buymeacoffee.com/heypointer) · [Ko-fi](https://ko-fi.com/heypointer)

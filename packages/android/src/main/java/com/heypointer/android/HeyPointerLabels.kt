@@ -98,7 +98,7 @@ data class HeyPointerLabels(
     val assistCouldntTap: String? = null,
     /** Default: "HeyPointer needs a client ID. Run heypointer init and pass the id to HeyPointer.install." */
     val clientRequired: String? = null,
-    /** Default: "The HeyPointer client ID looks wrong (it should start with gfc_). Check it against what heypointer init printed." */
+    /** Default: "The HeyPointer client ID looks wrong (it should start with hpc_). Check it against what heypointer init printed." */
     val clientMalformed: String? = null,
     /** Default: "HeyPointer does not recognise this client ID. Check that it matches the one heypointer init gave you." */
     val clientInvalid: String? = null,

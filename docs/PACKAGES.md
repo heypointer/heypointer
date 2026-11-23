@@ -36,7 +36,7 @@ cp node_modules/@heypointerhq/sdk/dist/heypointer.global.js public/    # or serv
 ```
 
 ```html
-<script src="/heypointer.global.js" data-base-url="https://your-heypointer-server" data-client-id="gfc_..." defer></script>
+<script src="/heypointer.global.js" data-base-url="https://your-heypointer-server" data-client-id="hpc_..." defer></script>
 ```
 
 Guide requests need a client id (`data-client-id`, from `heypointer init` or `heypointer clients create`); it is public, not a secret. The look and every string can be changed with `data-theme`, `data-labels` and friends ([CUSTOMIZING.md](CUSTOMIZING.md)); an app that needs real access control proxies through its own backend ([BACKEND_PROXY.md](BACKEND_PROXY.md)).

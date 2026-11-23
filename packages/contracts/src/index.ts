@@ -3,7 +3,7 @@
 import { z } from "zod";
 
 /** Contract version. Bump on any breaking schema change and note it in packages/contracts/README.md. */
-export const CONTRACT_VERSION = "1.11.0";
+export const CONTRACT_VERSION = "1.14.0";
 
 // ---------------------------------------------------------------------------
 // Knowledge base: sources, provenance, workflow graph
@@ -530,8 +530,8 @@ export type FlowValidateResponse = z.infer<typeof FlowValidateResponseSchema>;
  */
 export const CLIENT_ID_HEADER = "X-HeyPointer-Client";
 
-/** `gfc_` and 24 lowercase hex characters (96 random bits). */
-export const CLIENT_ID_PATTERN = /^gfc_[0-9a-f]{24}$/;
+/** `hpc_` and 24 lowercase hex characters (96 random bits). Ids issued before 1.14.0 start with `gfc_` and stay valid. */
+export const CLIENT_ID_PATTERN = /^(?:hpc|gfc)_[0-9a-f]{24}$/;
 export const ClientIdSchema = z.string().regex(CLIENT_ID_PATTERN);
 
 /** Routes use `Authorization: Bearer <server API key>`. */
@@ -601,22 +601,25 @@ export const TenantIdSchema = z.string().regex(TENANT_ID_PATTERN);
 /** The tenant every pre-1.9.0 install is migrated into. Requests that name no tenant act on it. */
 export const DEFAULT_TENANT_ID = "tn_000000000000";
 
-/** A secret key: `gfk_a_` (admin) or `gfk_g_` (guide) and 48 lowercase hex characters (192 random bits). Shown once. */
-export const KEY_SECRET_PATTERN = /^gfk_[ag]_[0-9a-f]{48}$/;
-export const ADMIN_KEY_PATTERN = /^gfk_a_[0-9a-f]{48}$/;
-export const GUIDE_KEY_PATTERN = /^gfk_g_[0-9a-f]{48}$/;
+/** A secret key: `hpk_a_` (admin), `hpk_g_` (guide) or `hpk_m_` (MCP, added in 1.12.0) and 48 lowercase hex characters (192 random bits). Shown once. Admin and guide keys issued before 1.14.0 start with `gfk_a_` / `gfk_g_` and stay valid. */
+export const KEY_SECRET_PATTERN = /^(?:(?:hpk|gfk)_[ag]|hpk_m)_[0-9a-f]{48}$/;
+export const ADMIN_KEY_PATTERN = /^(?:hpk|gfk)_a_[0-9a-f]{48}$/;
+export const GUIDE_KEY_PATTERN = /^(?:hpk|gfk)_g_[0-9a-f]{48}$/;
+export const MCP_KEY_PATTERN = /^hpk_m_[0-9a-f]{48}$/;
 /** A key handle (not a secret): used to list and revoke keys. */
 export const KEY_ID_PATTERN = /^kid_[0-9a-f]{12}$/;
 export const KeyIdSchema = z.string().regex(KEY_ID_PATTERN);
-/** A one-time enrollment code: `gfe_` and 32 lowercase hex characters. Valid for 15 minutes. */
-export const ENROLL_CODE_PATTERN = /^gfe_[0-9a-f]{32}$/;
+/** A one-time enrollment code: `hpe_` and 32 lowercase hex characters. Valid for 15 minutes. */
+export const ENROLL_CODE_PATTERN = /^(?:hpe|gfe)_[0-9a-f]{32}$/;
 export const ENROLLMENT_TTL_MS = 15 * 60 * 1000;
 
-export const KeyScopeSchema = z.enum(["admin", "guide"]);
+/** `mcp` (1.12.0) is read-only and works only on the hosted MCP endpoint (`POST /mcp`); every other route refuses it. */
+export const KeyScopeSchema = z.enum(["admin", "guide", "mcp"]);
 export type KeyScope = z.infer<typeof KeyScopeSchema>;
 
 /**
- * Tenant routes use a tenant admin key (`Authorization: Bearer gfk_a_...`). A guide key (`gfk_g_...`) may only fetch walkthroughs.
+ * Tenant routes use a tenant admin key (`Authorization: Bearer hpk_a_...`). A guide key (`hpk_g_...`) may only fetch walkthroughs.
+ * An MCP key (`hpk_m_...`, 1.12.0) may only call the hosted MCP endpoint, `POST /mcp`.
  */
 export const TENANT_ROUTES = {
   /** No authentication: the code is the credential. Rate limited like failed key checks. */
@@ -671,21 +674,35 @@ export const EnrollTenantResponseSchema = z.object({
 });
 export type EnrollTenantResponse = z.infer<typeof EnrollTenantResponseSchema>;
 
-export const CreateKeyRequestSchema = z.object({ name: NameSchema, scope: KeyScopeSchema });
+/**
+ * What an MCP key or an OAuth sign-in lets an agent do on the hosted MCP endpoint (1.13.0). `mcp:read` covers the tools that only
+ * read or validate; `mcp:write` adds the tools that change the tenant (a draft flow, never a live one). The customer picks.
+ */
+export const McpScopeSchema = z.enum(["mcp:read", "mcp:write"]);
+export type McpScope = z.infer<typeof McpScopeSchema>;
+export const MCP_SCOPES = ["mcp:read", "mcp:write"] as const;
+
+/** `mcpScopes` applies to `scope: "mcp"` only and must include `mcp:read`; it defaults to read only. */
+export const CreateKeyRequestSchema = z.object({ name: NameSchema, scope: KeyScopeSchema, mcpScopes: z.array(McpScopeSchema).min(1).max(2).optional() });
 export type CreateKeyRequest = z.infer<typeof CreateKeyRequestSchema>;
 
-export const CreateKeyResponseSchema = CreatedKeySchema.extend({ name: z.string(), createdAt: z.string() });
+/** `expiresAt` (1.13.0): an MCP key stops working at this time (7 days after creation unless the operator set another lifetime). Other keys do not expire (`null`). */
+export const CreateKeyResponseSchema = CreatedKeySchema.extend({ name: z.string(), createdAt: z.string(), expiresAt: z.string().nullable().optional(), mcpScopes: z.array(McpScopeSchema).optional() });
 export type CreateKeyResponse = z.infer<typeof CreateKeyResponseSchema>;
 
 export const KeySummarySchema = z.object({
   keyId: KeyIdSchema,
   scope: KeyScopeSchema,
   name: z.string(),
-  /** The first characters of the secret (e.g. `gfk_a_1a2b3c4d`), enough to recognise it. Not usable as a key. */
+  /** The first characters of the secret (e.g. `hpk_a_1a2b3c4d`), enough to recognise it. Not usable as a key. */
   prefix: z.string(),
   createdAt: z.string(),
   lastUsedAt: z.string().nullable(),
   revoked: z.boolean(),
+  /** 1.13.0. When an MCP key stops working; `null` for a key that does not expire. */
+  expiresAt: z.string().nullable().optional(),
+  /** 1.13.0. For MCP keys: what the key may do. */
+  mcpScopes: z.array(McpScopeSchema).optional(),
 });
 export type KeySummary = z.infer<typeof KeySummarySchema>;
 
@@ -718,11 +735,11 @@ export const UserIdSchema = z.string().regex(USER_ID_PATTERN);
 export const SESSION_ID_PATTERN = /^ses_[0-9a-f]{12}$/;
 export const INVITE_ID_PATTERN = /^inv_[0-9a-f]{12}$/;
 /** An invite link token: shown once to the inviter inside the link. */
-export const INVITE_TOKEN_PATTERN = /^gfi_[0-9a-f]{32}$/;
+export const INVITE_TOKEN_PATTERN = /^(?:hpi|gfi)_[0-9a-f]{32}$/;
 /** A password reset token: shown once inside the reset link; valid one hour. */
-export const RESET_TOKEN_PATTERN = /^gfr_[0-9a-f]{32}$/;
+export const RESET_TOKEN_PATTERN = /^(?:hpr|gfr)_[0-9a-f]{32}$/;
 /** The device code the CLI polls with. A secret: only its hash is stored. */
-export const DEVICE_CODE_PATTERN = /^gfd_[0-9a-f]{40}$/;
+export const DEVICE_CODE_PATTERN = /^(?:hpd|gfd)_[0-9a-f]{40}$/;
 /** What the person types in the browser: `ABCD-EFGH`, no vowels and no look-alike characters. */
 export const USER_CODE_PATTERN = /^[BCDFGHJKLMNPQRSTVWXZ2-9]{4}-[BCDFGHJKLMNPQRSTVWXZ2-9]{4}$/;
 export const RECOVERY_CODE_PATTERN = /^[0-9a-f]{5}-[0-9a-f]{5}$/;

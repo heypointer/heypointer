@@ -2,9 +2,21 @@
 
 The client side of HeyPointer, which gives people in-app guidance grounded in what a team already wrote. A guide highlights the real control on screen, step by step. It never invents a step, and it does not click for the user unless they turn Assist on.
 
-**Status: early prototype.** It has been tried on a few sample apps only. The packages are not published to npm or Maven yet, so build them from source.
+**Status: early access.** The web, React and Vue packages are on npm (`@heypointerhq/sdk`, `@heypointerhq/react`, `@heypointerhq/vue`, `@heypointerhq/contracts`) and the Android library is on Maven Central (`com.heypointer:heypointer-android`). Accounts on the hosted service are by invitation, sent in small batches from the waitlist.
 
-Docs: <https://heypointer.com/docs/>
+<p>
+  <a href="https://heypointer.com/"><b>Website</b></a> &nbsp;·&nbsp;
+  <a href="https://heypointer.com/docs/"><b>Docs</b></a> &nbsp;·&nbsp;
+  <a href="https://heypointer.com/waitlist/"><b>Join the waitlist</b></a>
+</p>
+
+<p>
+  <a href="https://x.com/heypointer"><img src="assets/social/x.svg" alt="HeyPointer on X" width="24" height="24"></a>
+  &nbsp;
+  <a href="https://www.instagram.com/heypointer/"><img src="assets/social/instagram.svg" alt="HeyPointer on Instagram" width="24" height="24"></a>
+</p>
+
+Support HeyPointer: [Buy Me a Coffee](https://buymeacoffee.com/heypointer) · [Ko-fi](https://ko-fi.com/heypointer)
 
 ## What is in this repository
 
